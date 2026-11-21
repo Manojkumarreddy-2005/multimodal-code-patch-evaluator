@@ -13,7 +13,7 @@ FIG_DIR = PAPER_DIR / "figures"
 HTML_OUT = PAPER_DIR / "research_paper.html"
 PDF_OUT = PAPER_DIR / "research_paper.pdf"
 
-REPO_URL = "https://github.com/manojymkr05/multimodal-code-patch-evaluator"
+REPO_URL = "https://github.com/Manojkumarreddy-2005/multimodal-code-patch-evaluator"
 
 
 def load_svg(name: str) -> str:

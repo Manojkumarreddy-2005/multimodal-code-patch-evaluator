@@ -5,6 +5,7 @@
 **Research Question:** *Can AI distinguish functional correctness from engineering quality when two distinct solutions satisfy 100% of unit tests?*
 
 **Research Paper & Publication Artifacts:**
+- GitHub Repository: [https://github.com/Manojkumarreddy-2005/multimodal-code-patch-evaluator](https://github.com/Manojkumarreddy-2005/multimodal-code-patch-evaluator)
 - Compiled IEEE Two-Column PDF: [`paper/research_paper.pdf`](paper/research_paper.pdf)
 - Overleaf-Ready IEEEtran LaTeX Source: [`paper/main.tex`](paper/main.tex) + [`paper/references.bib`](paper/references.bib)
 - Reproducible Vector Diagrams (SVG & High-DPI PNG): [`paper/figures/`](paper/figures/) (regenerable via `python scripts/generate_paper_figures.py` and `python scripts/build_paper_html_pdf.py`)
