@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 440" width="1120" height="440" role="img" aria-label="Track B CodeLLM 4-Axis Engineering Recall Radar and Position Bias Gap">
+  <defs>
+    <filter id="shadow" x="-6%" y="-6%" width="114%" height="118%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0F172A" flood-opacity="0.08"/>
+    </filter>
+    <filter id="softShadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#0F172A" flood-opacity="0.06"/>
+    </filter>
+    <linearGradient id="gradNavy" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#162A4A"/>
+      <stop offset="100%" stop-color="#27477A"/>
+    </linearGradient>
+    <linearGradient id="gradIndigo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B5BDB"/>
+      <stop offset="100%" stop-color="#5C7CFA"/>
+    </linearGradient>
+    <linearGradient id="gradTeal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#099268"/>
+      <stop offset="100%" stop-color="#20C997"/>
+    </linearGradient>
+    <linearGradient id="gradViolet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6741D9"/>
+      <stop offset="100%" stop-color="#845EF7"/>
+    </linearGradient>
+    <linearGradient id="gradAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D9480F"/>
+      <stop offset="100%" stop-color="#F76707"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#475569"/>
+    </marker>
+    <marker id="arrowIndigo" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#3B5BDB"/>
+    </marker>
+    <marker id="arrowTeal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#0CA678"/>
+    </marker>
+    <marker id="arrowViolet" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#7048E8"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="440" fill="#FFFFFF" rx="6"/>
+
+
+    <rect x="14" y="14" width="515" height="412" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="271.5" y="38" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="13.2" font-weight="700">
+      (a) 4-Axis Engineering Rubric Recall (SWE-Refactor OOD)
+    </text>
+    
+<polygon points="272.0,92.0 386.0,206.0 272.0,320.0 158.0,206.0" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.3" stroke-dasharray=""/>
+<text x="277" y="103.0" fill="#64748B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.2">100%</text>
+<polygon points="272.0,111.4 366.6,206.0 272.0,300.6 177.4,206.0" fill="none" stroke="#CBD5E1" stroke-width="0.9" stroke-dasharray="3,2"/>
+<text x="277" y="122.4" fill="#64748B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.2">90%</text>
+<polygon points="272.0,130.8 347.2,206.0 272.0,281.2 196.8,206.0" fill="none" stroke="#CBD5E1" stroke-width="0.9" stroke-dasharray="3,2"/>
+<text x="277" y="141.8" fill="#64748B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.2">80%</text>
+<polygon points="272.0,150.1 327.9,206.0 272.0,261.9 216.1,206.0" fill="none" stroke="#CBD5E1" stroke-width="0.9" stroke-dasharray="3,2"/>
+<text x="277" y="161.1" fill="#64748B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.2">70%</text>
+<polygon points="272.0,169.5 308.5,206.0 272.0,242.5 235.5,206.0" fill="none" stroke="#CBD5E1" stroke-width="0.9" stroke-dasharray="3,2"/>
+<text x="277" y="180.5" fill="#64748B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.2">60%</text>
+<line x1="272" y1="206" x2="272.0" y2="92.0" stroke="#CBD5E1" stroke-width="1"/>
+<text x="272.0" y="62.0" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">Maintainability</text>
+<text x="272.0" y="75.0" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">Reasoning</text>
+<line x1="272" y1="206" x2="386.0" y2="206.0" stroke="#CBD5E1" stroke-width="1"/>
+<text x="400.0" y="206.0" text-anchor="start" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">Complexity</text>
+<text x="400.0" y="219.0" text-anchor="start" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">Awareness</text>
+<line x1="272" y1="206" x2="272.0" y2="320.0" stroke="#CBD5E1" stroke-width="1"/>
+<text x="272.0" y="344.0" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">Future Change</text>
+<text x="272.0" y="357.0" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">Impact (DFG)</text>
+<line x1="272" y1="206" x2="158.0" y2="206.0" stroke="#CBD5E1" stroke-width="1"/>
+<text x="144.0" y="206.0" text-anchor="end" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">Duplication</text>
+<text x="144.0" y="219.0" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">Detection</text>
+<polygon points="272.0,102.1 371.4,206.0 272.0,270.4 208.5,206.0" fill="#0CA678" fill-opacity="0.14" stroke="#0CA678" stroke-width="2.4"/>
+<circle cx="272.0" cy="102.1" r="3.6" fill="#0CA678" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="371.4" cy="206.0" r="3.6" fill="#0CA678" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="272.0" cy="270.4" r="3.6" fill="#0CA678" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="208.5" cy="206.0" r="3.6" fill="#0CA678" stroke="#FFFFFF" stroke-width="1.2"/>
+<polygon points="272.0,106.4 352.7,206.0 272.0,269.2 215.0,206.0" fill="#3B5BDB" fill-opacity="0.14" stroke="#3B5BDB" stroke-width="2.4"/>
+<circle cx="272.0" cy="106.4" r="3.6" fill="#3B5BDB" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="352.7" cy="206.0" r="3.6" fill="#3B5BDB" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="272.0" cy="269.2" r="3.6" fill="#3B5BDB" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="215.0" cy="206.0" r="3.6" fill="#3B5BDB" stroke="#FFFFFF" stroke-width="1.2"/>
+<polygon points="272.0,115.0 340.1,206.0 272.0,251.9 232.9,206.0" fill="#D9480F" fill-opacity="0.14" stroke="#D9480F" stroke-width="2.4"/>
+<circle cx="272.0" cy="115.0" r="3.6" fill="#D9480F" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="340.1" cy="206.0" r="3.6" fill="#D9480F" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="272.0" cy="251.9" r="3.6" fill="#D9480F" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="232.9" cy="206.0" r="3.6" fill="#D9480F" stroke="#FFFFFF" stroke-width="1.2"/>
+<rect x="34" y="382" width="475" height="32" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+<rect x="48" y="393" width="11" height="11" rx="2" fill="#0CA678"/>
+<text x="64" y="402" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.4" font-weight="700">Qwen2.5-Coder-7B</text>
+<rect x="204" y="393" width="11" height="11" rx="2" fill="#3B5BDB"/>
+<text x="220" y="402" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.4" font-weight="700">DeepSeek-Coder-6.7B</text>
+<rect x="360" y="393" width="11" height="11" rx="2" fill="#D9480F"/>
+<text x="376" y="402" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.4" font-weight="700">Meta-Llama-3-8B</text>
+
+    <rect x="542" y="14" width="564" height="412" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="824" y="38" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="13.2" font-weight="700">
+      (b) Bidirectional Swap Audit: Accuracy Collapse &amp; Position Bias Rate
+    </text>
+    
+<rect x="594" y="78" width="492" height="248" fill="#FFFFFF" stroke="#CBD5E1"/>
+<line x1="594" y1="326.0" x2="1086" y2="326.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="587" y="329.5" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">0%</text>
+<line x1="594" y1="279.2" x2="1086" y2="279.2" stroke="#E2E8F0" stroke-width="1"/>
+<text x="587" y="282.7" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">20%</text>
+<line x1="594" y1="232.4" x2="1086" y2="232.4" stroke="#E2E8F0" stroke-width="1"/>
+<text x="587" y="235.9" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">40%</text>
+<line x1="594" y1="185.6" x2="1086" y2="185.6" stroke="#E2E8F0" stroke-width="1"/>
+<text x="587" y="189.1" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">60%</text>
+<line x1="594" y1="138.8" x2="1086" y2="138.8" stroke="#E2E8F0" stroke-width="1"/>
+<text x="587" y="142.3" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">80%</text>
+<line x1="594" y1="92.0" x2="1086" y2="92.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="587" y="95.5" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">100%</text>
+<text x="556" y="202.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.3" font-weight="600" transform="rotate(-90 556 202.0)">Percentage (%)</text>
+<line x1="840.0" y1="78" x2="840.0" y2="326" stroke="#94A3B8" stroke-width="1.3" stroke-dasharray="4,3"/>
+<rect x="620.0" y="52" width="194" height="20" rx="5" fill="#EDF2FF" stroke="#3B5BDB" stroke-width="0.9"/>
+<text x="717.0" y="65.5" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="700">In-Domain: CodeNet Test (n=222)</text>
+<rect x="866.0" y="52" width="194" height="20" rx="5" fill="#FFF4E6" stroke="#D9480F" stroke-width="0.9"/>
+<text x="963.0" y="65.5" text-anchor="middle" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="700">OOD: SWE-Refactor Subtle (n=250)</text>
+<rect x="603.5" y="104.7" width="19" height="221.3" rx="2.5" fill="#3B5BDB"/>
+<text x="613.0" y="100.7" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">94.6</text>
+<rect x="625.5" y="115.2" width="19" height="210.8" rx="2.5" fill="#0CA678"/>
+<text x="635.0" y="111.2" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">90.1</text>
+<rect x="647.5" y="307.0" width="19" height="19.0" rx="2.5" fill="#D9480F"/>
+<text x="657.0" y="303.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">8.1</text>
+<text x="635.0" y="341" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">Qwen2.5</text>
+<text x="635.0" y="353" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4">(CodeNet)</text>
+<rect x="685.5" y="108.9" width="19" height="217.1" rx="2.5" fill="#3B5BDB"/>
+<text x="695.0" y="104.9" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">92.8</text>
+<rect x="707.5" y="117.3" width="19" height="208.7" rx="2.5" fill="#0CA678"/>
+<text x="717.0" y="113.3" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">89.2</text>
+<rect x="729.5" y="306.0" width="19" height="20.0" rx="2.5" fill="#D9480F"/>
+<text x="739.0" y="302.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">8.6</text>
+<text x="717.0" y="341" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">DeepSeek</text>
+<text x="717.0" y="353" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4">(CodeNet)</text>
+<rect x="767.5" y="114.2" width="19" height="211.8" rx="2.5" fill="#3B5BDB"/>
+<text x="777.0" y="110.2" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">90.5</text>
+<rect x="789.5" y="135.3" width="19" height="190.7" rx="2.5" fill="#0CA678"/>
+<text x="799.0" y="131.3" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">81.5</text>
+<rect x="811.5" y="288.1" width="19" height="37.9" rx="2.5" fill="#D9480F"/>
+<text x="821.0" y="284.1" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">16.2</text>
+<text x="799.0" y="341" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">Llama-3</text>
+<text x="799.0" y="353" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4">(CodeNet)</text>
+<rect x="849.5" y="137.0" width="19" height="189.0" rx="2.5" fill="#3B5BDB"/>
+<text x="859.0" y="133.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">80.8</text>
+<rect x="871.5" y="173.5" width="19" height="152.5" rx="2.5" fill="#0CA678"/>
+<text x="881.0" y="169.5" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">65.2</text>
+<rect x="893.5" y="263.3" width="19" height="62.7" rx="2.5" fill="#D9480F"/>
+<text x="903.0" y="259.3" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">26.8</text>
+<text x="881.0" y="341" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">Qwen2.5</text>
+<text x="881.0" y="353" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4">(SWE OOD)</text>
+<rect x="931.5" y="140.7" width="19" height="185.3" rx="2.5" fill="#3B5BDB"/>
+<text x="941.0" y="136.7" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">79.2</text>
+<rect x="953.5" y="180.0" width="19" height="146.0" rx="2.5" fill="#0CA678"/>
+<text x="963.0" y="176.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">62.4</text>
+<rect x="975.5" y="250.2" width="19" height="75.8" rx="2.5" fill="#D9480F"/>
+<text x="985.0" y="246.2" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">32.4</text>
+<text x="963.0" y="341" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">DeepSeek</text>
+<text x="963.0" y="353" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4">(SWE OOD)</text>
+<rect x="1013.5" y="149.1" width="19" height="176.9" rx="2.5" fill="#3B5BDB"/>
+<text x="1023.0" y="145.1" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">75.6</text>
+<rect x="1035.5" y="195.9" width="19" height="130.1" rx="2.5" fill="#0CA678"/>
+<text x="1045.0" y="191.9" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">55.6</text>
+<rect x="1057.5" y="238.0" width="19" height="88.0" rx="2.5" fill="#D9480F"/>
+<text x="1067.0" y="234.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">37.6</text>
+<text x="1045.0" y="341" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">Llama-3</text>
+<text x="1045.0" y="353" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4">(SWE OOD)</text>
+
+    <rect x="562" y="382" width="526" height="32" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <rect x="576" y="393" width="11" height="11" rx="2" fill="#3B5BDB"/>
+    <text x="592" y="402" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3" font-weight="600">Single-Order Acc_pref</text>
+    <rect x="728" y="393" width="11" height="11" rx="2" fill="#0CA678"/>
+    <text x="744" y="402" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3" font-weight="600">Swap-Consistent Acc_strict</text>
+    <rect x="902" y="393" width="11" height="11" rx="2" fill="#D9480F"/>
+    <text x="918" y="402" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3" font-weight="700">Position Bias Rate (PBR)</text>
+    
+</svg>

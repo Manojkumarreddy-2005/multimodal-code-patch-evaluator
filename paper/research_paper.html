@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Beyond Pass@k: Multimodal Preference Learning, Multi-Objective RL, and Bidirectional CodeLLM Auditing</title>
+<style>
+  @page {
+    size: A4;
+    margin: 15mm 14mm 16mm 14mm;
+    @bottom-center {
+      content: counter(page);
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: 9pt;
+      color: #475569;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Times New Roman", "Liberation Serif", Georgia, serif;
+    font-size: 9.6pt;
+    line-height: 1.34;
+    color: #111827;
+    margin: 0;
+    padding: 0;
+    background: #FFFFFF;
+  }
+  .page-wrap {
+    max-width: 210mm;
+    margin: 0 auto;
+  }
+  header.paper-header {
+    text-align: center;
+    padding-bottom: 10pt;
+    margin-bottom: 10pt;
+    border-bottom: 1.4pt solid #162A4A;
+  }
+  .venue-tag {
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 7.8pt;
+    font-weight: 700;
+    letter-spacing: 0.9pt;
+    text-transform: uppercase;
+    color: #3B5BDB;
+    margin-bottom: 5pt;
+  }
+  h1.paper-title {
+    font-size: 16.5pt;
+    line-height: 1.2;
+    font-weight: 700;
+    color: #0F172A;
+    margin: 0 0 8pt 0;
+  }
+  .authors {
+    font-size: 10.6pt;
+    font-weight: 600;
+    color: #1E293B;
+    margin-bottom: 3pt;
+  }
+  .affiliation {
+    font-size: 9pt;
+    font-style: italic;
+    color: #334155;
+    line-height: 1.3;
+  }
+  .meta-links {
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 8.2pt;
+    color: #0B7285;
+    margin-top: 4pt;
+  }
+  .meta-links a {
+    color: #0B7285;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .two-col {
+    column-count: 2;
+    column-gap: 14pt;
+    text-align: justify;
+    hyphens: auto;
+  }
+  .abstract-box {
+    background: #F8FAFC;
+    border-left: 3pt solid #162A4A;
+    padding: 7pt 9pt;
+    margin-bottom: 9pt;
+    font-size: 8.9pt;
+    line-height: 1.32;
+    break-inside: avoid;
+  }
+  .abstract-box strong.abs-lbl {
+    font-style: italic;
+    color: #162A4A;
+  }
+  .keywords {
+    font-size: 8.5pt;
+    margin-top: 5pt;
+    color: #334155;
+  }
+  h2 {
+    font-size: 10.4pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.35pt;
+    color: #162A4A;
+    border-bottom: 0.7pt solid #CBD5E1;
+    padding-bottom: 2pt;
+    margin: 10pt 0 5pt 0;
+    break-after: avoid;
+    text-align: left;
+  }
+  h3 {
+    font-size: 9.7pt;
+    font-style: italic;
+    font-weight: 700;
+    color: #1E3A5F;
+    margin: 7pt 0 3pt 0;
+    break-after: avoid;
+    text-align: left;
+  }
+  p {
+    margin: 0 0 5.5pt 0;
+  }
+  ul, ol {
+    margin: 3pt 0 6pt 0;
+    padding-left: 14pt;
+  }
+  li {
+    margin-bottom: 2.5pt;
+  }
+  .rq-callout {
+    background: #EDF2FF;
+    border: 0.8pt solid #91A7FF;
+    border-radius: 4pt;
+    padding: 5.5pt 8pt;
+    margin: 6pt 0;
+    font-size: 9pt;
+    break-inside: avoid;
+  }
+  .eq-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5.5pt 0;
+    padding: 3.5pt 6pt;
+    background: #F8FAFC;
+    border-radius: 3pt;
+    font-family: "Cambria Math", "Times New Roman", serif;
+    font-size: 9.1pt;
+    break-inside: avoid;
+  }
+  .eq-body {
+    flex: 1;
+    text-align: center;
+  }
+  .eq-num {
+    font-size: 8.5pt;
+    color: #475569;
+    margin-left: 6pt;
+  }
+  code {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 8.2pt;
+    background: #F1F5F9;
+    padding: 0.5pt 2.5pt;
+    border-radius: 2pt;
+    color: #0F172A;
+  }
+  .span-full {
+    column-span: all;
+    margin: 8pt 0 9pt 0;
+    break-inside: avoid;
+  }
+  figure {
+    margin: 0;
+    padding: 0;
+    break-inside: avoid;
+  }
+  figure svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 0.6pt solid #E2E8F0;
+    border-radius: 4pt;
+  }
+  figcaption {
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 8pt;
+    line-height: 1.3;
+    color: #334155;
+    margin-top: 4pt;
+    text-align: justify;
+  }
+  figcaption strong {
+    color: #162A4A;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 7.9pt;
+    line-height: 1.25;
+    margin: 4pt 0 7pt 0;
+    break-inside: avoid;
+  }
+  caption {
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 8.2pt;
+    font-weight: 700;
+    color: #162A4A;
+    text-align: center;
+    margin-bottom: 3.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.25pt;
+  }
+  thead tr {
+    border-top: 1.3pt solid #162A4A;
+    border-bottom: 0.9pt solid #162A4A;
+    background: #F1F5F9;
+  }
+  tbody tr {
+    border-bottom: 0.4pt solid #E2E8F0;
+  }
+  tbody tr:last-child {
+    border-bottom: 1.3pt solid #162A4A;
+  }
+  th, td {
+    padding: 3pt 4pt;
+    text-align: center;
+    vertical-align: middle;
+  }
+  th:first-child, td:first-child {
+    text-align: left;
+  }
+  tr.hl-row {
+    background: #E6FCF5;
+    font-weight: 700;
+  }
+  .algo-box {
+    border-top: 1.3pt solid #162A4A;
+    border-bottom: 1.3pt solid #162A4A;
+    background: #F8FAFC;
+    padding: 5pt 7pt;
+    margin: 6pt 0;
+    font-size: 8.1pt;
+    line-height: 1.3;
+    break-inside: avoid;
+  }
+  .algo-title {
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-weight: 700;
+    color: #162A4A;
+    border-bottom: 0.7pt solid #CBD5E1;
+    padding-bottom: 2.5pt;
+    margin-bottom: 3.5pt;
+  }
+  .algo-box ol {
+    margin: 0;
+    padding-left: 14pt;
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+  .algo-box li {
+    margin-bottom: 1.5pt;
+  }
+  .refs {
+    font-size: 8pt;
+    line-height: 1.28;
+    padding-left: 16pt;
+    text-align: left;
+  }
+  .refs li {
+    margin-bottom: 2.8pt;
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<header class="paper-header">
+  <div class="venue-tag">Reinforcement Learning Course Research Paper &bull; National Institute of Technology Warangal</div>
+  <h1 class="paper-title">Beyond Pass@k: Multimodal Preference Learning, Multi-Objective Reinforcement Learning, and Bidirectional CodeLLM Auditing for Patch Maintainability</h1>
+  <div class="authors">Yeddula Manoj Kumar Reddy<sup>1,*</sup>, Pabbineedi Vignesh Surya<sup>1</sup>, and Duvvada Abhishek<sup>1</sup></div>
+  <div class="affiliation">
+    <sup>1</sup>National Institute of Technology Warangal (NIT Warangal), Warangal, Telangana, India<br>
+    <sup>*</sup>Corresponding author: <strong>manojymkr05@gmail.com</strong>
+  </div>
+  <div class="meta-links">
+    Code &amp; Reproducibility Artifact: <a href="https://github.com/manojymkr05/multimodal-code-patch-evaluator">https://github.com/manojymkr05/multimodal-code-patch-evaluator</a>
+  </div>
+</header>
+
+<div class="two-col">
+
+  <div class="abstract-box">
+    <strong class="abs-lbl">Abstract&mdash;</strong>Automated program repair (APR) and Large Language Model (LLM) code generation benchmarks predominantly evaluate candidate patches via functional unit-test pass rates (Pass@<i>k</i>). Yet two distinct implementations that both satisfy 100% of unit tests can differ drastically in cognitive complexity, structural duplication, intra-procedural data-flow coupling, and long-term maintenance cost. Modeled on recent code-judge auditing frameworks (<i>CodeJudgeBench</i>, <i>SWE-Refactor</i>, and <i>CodeJudge</i>), we investigate whether AI can reliably distinguish engineering maintainability from functional correctness when both candidate patches pass 100% of unit tests. We construct a leakage-free dual-corpus SQLite benchmark (<code>patch_pairs.db</code>) comprising <strong>7,650</strong> AST-canonicalized Java snippets paired into <strong>2,341</strong> verified preference pairs: 1,504 in-domain algorithmic pairs across 250 problems from <strong>IBM Project CodeNet (Java250)</strong> and 837 out-of-distribution (OOD) real-world developer refactorings across 18 open-source repositories from <strong>SWE-Refactor</strong>, including 1,178 length-matched pairs (|&Delta;SLOC| &le; 15%). Our in-memory <code>tree-sitter-java</code> feature engine extracts 12 method-normalized AST and Data-Flow Graph (DFG) metrics in a median latency of <strong>1.58 ms</strong> (7.54 ms mean, 48.64 ms <i>p</i><sub>95</sub>), satisfying a &lt;50 ms SLA for Reinforcement Learning (RL) reward loops. We evaluate a dual-track system: <strong>Track A</strong> fuses 768-D code/DFG embeddings with 64-D projected static features into a 256-D representation across Tabular XGBoost, Multimodal Pointwise Debt Regression (MSE), Siamese Bradley-Terry preference learning, and a Gymnasium <code>PatchRankingEnv</code> <strong>Dueling Double-DQN</strong> agent optimizing a 4-component multi-objective reward; <strong>Track B</strong> audits open-weights CodeLLM rubric profiles (<code>Qwen2.5-Coder-7B</code>, <code>DeepSeek-Coder-6.7B</code>, <code>Meta-Llama-3-8B</code>) via bidirectional swap-consistency testing. Siamese Bradley-Terry reaches <strong>99.55%</strong> in-domain accuracy (99.12% length-matched), Dueling Double-DQN converges from 45.83% to <strong>97.92%</strong> training win rate (97.75% test accuracy, 66.83% OOD length-matched), and Multimodal Pointwise MSE achieves the strongest zero-shot OOD generalization on real developer refactorings (<strong>85.78%</strong> accuracy, Spearman &rho; = 0.8407). We uncover and resolve the <em>Extract Method Paradox</em> (+20.31 pp OOD gain via per-method normalization) and expose severe position bias (26.80%&ndash;37.60%) in single-order LLM-as-a-Judge auditing.
+    <div class="keywords"><strong>Index Terms&mdash;</strong>Reinforcement Learning, Dueling Double-DQN, Multi-Objective Reward Shaping, Pairwise Preference Learning, Technical Debt, Software Maintainability, LLM-as-a-Judge, Position Bias, Tree-Sitter.</div>
+  </div>
+
+  <h2>I. Introduction</h2>
+  <h3>A. Motivation: The Maintainability Gap Beyond Pass@k</h3>
+  <p>Large Language Models for Code (CodeLLMs) and autonomous software engineering agents have achieved rapid gains on execution benchmarks such as HumanEval [13], Project CodeNet [15], and SWE-bench [14]. Across these benchmarks, patch acceptance is reduced almost exclusively to binary test-suite pass rates (Pass@<i>k</i>). In industrial software engineering, however, passing unit tests is a <em>necessary</em> but <em>insufficient</em> condition for production merge approval. A functionally passing patch that introduces deeply nested conditionals, copy-paste structural clones (DRY violations), sprawling variable live spans, or excessive efferent coupling injects <strong>technical debt</strong> [22], [23] that inflates defect risk and developer cognitive load.</p>
+  <p>Two mainstream automated quality-assessment paradigms struggle to close this gap. First, server-side static analyzers (e.g., SonarQube, PMD) compute rule-based SQALE remediation costs [23] but require full compilation and seconds-to-minutes per candidate, preventing their use inside online Reinforcement Learning (RL) loops or high-throughput candidate rerankers. Second, generative LLM-as-a-Judge evaluators [1], [3], [4] exhibit severe <strong>position bias</strong> (flipping verdicts when candidate slots swap), length/verbosity shortcuts, and natural-language rationales that contradict the underlying syntax tree.</p>
+
+  <h3>B. Research Questions</h3>
+  <p>Following the empirical benchmark methodology of <em>CodeJudgeBench</em> [1] and <em>SWE-Refactor</em> [2], we investigate one overarching core question decomposed into four empirical Research Questions (RQs):</p>
+  <div class="rq-callout">
+    <strong>Core Research Question:</strong> <em>Can AI reliably distinguish functional correctness from engineering maintainability when two distinct Java patches satisfy 100% of unit tests?</em>
+  </div>
+  <ul>
+    <li><strong>RQ1 (Fast Feature Engineering &amp; Discriminative Ranking):</strong> Can an in-memory <code>tree-sitter-java</code> engine (&lt;50 ms SLA) combined with a multimodal code/DFG encoder accurately rank maintainable patches over debt-heavy ones, even when candidate patches are length-matched (|&Delta;SLOC| &le; 15%)?</li>
+    <li><strong>RQ2 (Multi-Objective RL vs. Supervised Objectives):</strong> How does a Gymnasium sequential <strong>Dueling Double-DQN</strong> agent optimizing a 4-part multi-objective reward compare against XGBoost, Pointwise Debt Regression (MSE), and Siamese Bradley-Terry preference learning across in-domain and OOD splits?</li>
+    <li><strong>RQ3 (Modality Ablations &amp; Feature Attribution):</strong> How much predictive power derives from deterministic AST/DFG metrics versus 768-D code/DFG embeddings, and do models resist line-count shortcuts?</li>
+    <li><strong>RQ4 (Zero-Shot OOD Transfer &amp; Bidirectional CodeLLM Auditing):</strong> Do models trained solely on algorithmic CodeNet pairs transfer zero-shot to real-world developer refactoring commits (SWE-Refactor), and how severely does slot-order position bias affect CodeLLM judges?</li>
+  </ul>
+
+  <h3>C. Summary of Contributions</h3>
+  <ol>
+    <li><strong>Leakage-Free Dual-Dataset Benchmark (<code>patch_pairs.db</code>):</strong> 7,650 AST-canonicalized, comment-stripped Java snippets paired into 2,341 verified preference pairs across <em>IBM CodeNet Java250</em> (1,504 pairs, strict <code>problem_id</code> split) and <em>SWE-Refactor</em> (837 real-world refactorings across 18 OSS Java repositories), including 1,178 length-matched pairs.</li>
+    <li><strong>Sub-10 ms Method-Normalized Engine &amp; Extract Method Paradox:</strong> 12 deterministic AST/DFG metrics extracted at 1.58 ms median latency, empirically demonstrating across 381 <em>Extract Method</em> commits why per-method normalization boosts zero-shot OOD accuracy by +20.31 pp (65.47% &rarr; 85.78%).</li>
+    <li><strong>Multi-Objective RL Environment &amp; Dueling Double-DQN Agent:</strong> Formalization of sequential patch triage as a Gymnasium MDP (<code>PatchRankingEnv</code>) with symmetric interaction states, 4-part bounded reward shaping, and full head-to-head ablations against supervised objectives.</li>
+    <li><strong>Bidirectional Swap-Consistency Audit Suite:</strong> Extending <em>CodeJudgeBench</em> [1], we evaluate strict swap-consistent accuracy (Acc<sub>strict</sub>), Position Bias Rate (PBR), Selection-Reasoning Consistency Rate (SRCR), and 4-axis rubric recall.</li>
+  </ol>
+
+  <h2>II. Related Work</h2>
+  <p><strong>Code Quality Beyond Pass@k:</strong> Prior execution benchmarks [13]&ndash;[15] omit non-functional quality attributes. Classical metrics such as McCabe cyclomatic complexity [20], Halstead volume [21], Campbell cognitive complexity [22], and SQALE technical debt [23] quantify structural maintainability. <em>SWE-Refactor</em> [2] recently introduced 1,099 developer-written, behavior-preserving Java refactorings verified via JUnit and <em>RefactoringMiner</em> [24], offering an authentic testbed for refactoring quality [25].</p>
+  <p><strong>LLM-as-a-Judge &amp; Bias Auditing:</strong> Zheng et al. [4] established position and verbosity biases in LLM judges. In code evaluation, <em>CodeJudge</em> [3] introduced structured &ldquo;slow-thinking&rdquo; taxonomies without unit tests, while <em>CodeJudgeBench</em> [1] audited LLM judges across generation, repair, and test tasks, showing that pairwise prompting beats scalar scoring yet suffers pronounced slot-order sensitivity. Our Track B extends this swap-auditing protocol to 4-axis maintainability reasoning.</p>
+  <p><strong>Preference Learning &amp; Multi-Objective RL:</strong> Pairwise preference modeling via Bradley-Terry [8] powers RLHF [9] and DPO [10]. Multi-Objective RL (MORL) [11] optimizes competing reward signals in standardized Gymnasium [12] MDPs. Deep value-based agents combine Experience Replay [5], Double Q-learning target decoupling [6] to prevent Q-value overestimation, and Dueling streams [7] separating state value <i>V</i>(<i>s</i>) from action advantage <i>A</i>(<i>s</i>, <i>a</i>). We unify these RL mechanisms for automated patch triage.</p>
+
+  <h2>III. Benchmark &amp; Feature Engineering</h2>
+  <p>Fig. 1 illustrates the end-to-end four-phase dual-track architecture implemented in our repository.</p>
+
+  <div class="span-full">
+    <figure>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 560" width="1120" height="560" role="img" aria-label="End-to-End Four-Phase Multimodal Code Patch Quality Evaluation Architecture">
+  <defs>
+    <filter id="shadow" x="-6%" y="-6%" width="114%" height="118%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0F172A" flood-opacity="0.08"/>
+    </filter>
+    <filter id="softShadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#0F172A" flood-opacity="0.06"/>
+    </filter>
+    <linearGradient id="gradNavy" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#162A4A"/>
+      <stop offset="100%" stop-color="#27477A"/>
+    </linearGradient>
+    <linearGradient id="gradIndigo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B5BDB"/>
+      <stop offset="100%" stop-color="#5C7CFA"/>
+    </linearGradient>
+    <linearGradient id="gradTeal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#099268"/>
+      <stop offset="100%" stop-color="#20C997"/>
+    </linearGradient>
+    <linearGradient id="gradViolet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6741D9"/>
+      <stop offset="100%" stop-color="#845EF7"/>
+    </linearGradient>
+    <linearGradient id="gradAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D9480F"/>
+      <stop offset="100%" stop-color="#F76707"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#475569"/>
+    </marker>
+    <marker id="arrowIndigo" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#3B5BDB"/>
+    </marker>
+    <marker id="arrowTeal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#0CA678"/>
+    </marker>
+    <marker id="arrowViolet" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#7048E8"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="560" fill="#FFFFFF" rx="6"/>
+
+
+    <rect x="18" y="14" width="1084" height="44" rx="8" fill="url(#gradNavy)"/>
+    <text x="560" y="34" text-anchor="middle" fill="#FFFFFF" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="15.5" font-weight="700">
+      End-to-End Dual-Track Architecture: Distinguishing Engineering Maintainability Beyond Functional Pass@k
+    </text>
+    <text x="560" y="50" text-anchor="middle" fill="#CBD5E1" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11">
+      Leakage-Free Corpus Curation  •  Sub-10ms Tree-Sitter Feature Engine  •  Multimodal Preference Learning &amp; Multi-Objective DQN  •  Bidirectional CodeLLM Audit
+    </text>
+    
+
+    <g filter="url(#softShadow)">
+      <rect x="20" y="72" width="235" height="468" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.3"/>
+      <rect x="20" y="72" width="235" height="32" rx="10" fill="#1E3A5F"/>
+      <rect x="20" y="92" width="235" height="12" fill="#1E3A5F"/>
+      <text x="137.5" y="93" text-anchor="middle" fill="#FFFFFF" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="700">PHASE 1: VERIFIED CORPUS</text>
+    </g>
+    
+
+    <rect x="33" y="116" width="209" height="72" rx="7" fill="#FFFFFF" stroke="#3B5BDB" stroke-width="1.3"/>
+    <text x="43" y="134" fill="#1E3A5F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.2" font-weight="700">IBM CodeNet (Java250)</text>
+    <text x="43" y="150" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10">• 250 problems, 75k 100%-passing files</text>
+    <text x="43" y="164" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10">• 1,504 pairs (Strict problem_id split)</text>
+    <text x="43" y="178" fill="#3B5BDB" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.8" font-weight="600">Train: 1,054 | Val: 228 | Test: 222</text>
+
+    <rect x="33" y="200" width="209" height="72" rx="7" fill="#FFFFFF" stroke="#0CA678" stroke-width="1.3"/>
+    <text x="43" y="218" fill="#087F5B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.2" font-weight="700">SWE-Refactor (OOD Test)</text>
+    <text x="43" y="234" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10">• 18 OSS Java repos (JUnit + RMiner 3.0)</text>
+    <text x="43" y="248" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10">• 837 developer refactoring pairs</text>
+    <text x="43" y="262" fill="#0CA678" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.8" font-weight="600">Zero-Shot OOD Transfer Benchmark</text>
+
+    <path d="M 33 152 L 26 152 L 26 331 L 31 331" fill="none" stroke="#3B5BDB" stroke-width="1.5" marker-end="url(#arrowIndigo)"/>
+    <line x1="137.5" y1="272" x2="137.5" y2="294" stroke="#0CA678" stroke-width="1.6" marker-end="url(#arrowTeal)"/>
+
+    <rect x="33" y="298" width="209" height="66" rx="7" fill="#EEF2FF" stroke="#4C6EF5" stroke-width="1.2"/>
+    <text x="137.5" y="317" text-anchor="middle" fill="#1E3A5F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="700">AST Comment Stripper &amp; SQALE TDI</text>
+    <text x="137.5" y="333" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.8">Byte-span comment deletion (safe literals)</text>
+    <text x="137.5" y="348" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.8">Per-method SonarJava remediation cost</text>
+
+    <line x1="137.5" y1="364" x2="137.5" y2="390" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+    <!-- SQLite Cylinder -->
+    <g filter="url(#softShadow)">
+      <path d="M 48 408 L 48 498 A 90 14 0 0 0 227 498 L 227 408 Z" fill="#162A4A"/>
+      <ellipse cx="137.5" cy="408" rx="89.5" ry="13" fill="#2B4C7E" stroke="#64748B" stroke-width="1"/>
+      <text x="137.5" y="438" text-anchor="middle" fill="#FFFFFF" font-family="'Consolas', 'Courier New', monospace" font-size="11.5" font-weight="700">patch_pairs.db</text>
+      <text x="137.5" y="456" text-anchor="middle" fill="#E2E8F0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10">7,650 Snippets | 2,341 Pairs</text>
+      <text x="137.5" y="472" text-anchor="middle" fill="#74C0FC" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.8" font-weight="600">1,178 Length-Matched (|ΔSLOC|≤15%)</text>
+      <text x="137.5" y="489" text-anchor="middle" fill="#94A3B8" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">Zero Group Leakage Verified</text>
+    </g>
+    
+
+    <g filter="url(#softShadow)">
+      <rect x="275" y="72" width="230" height="468" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.3"/>
+      <rect x="275" y="72" width="230" height="32" rx="10" fill="#0B7285"/>
+      <rect x="275" y="92" width="230" height="12" fill="#0B7285"/>
+      <text x="390" y="93" text-anchor="middle" fill="#FFFFFF" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="700">PHASE 2: TREE-SITTER ENGINE</text>
+    </g>
+
+    <rect x="288" y="116" width="204" height="58" rx="7" fill="#E3FAFC" stroke="#15AABF" stroke-width="1.3"/>
+    <text x="390" y="134" text-anchor="middle" fill="#0B7285" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.2" font-weight="700">tree-sitter-java AST + DFG</text>
+    <text x="390" y="149" text-anchor="middle" fill="#334155" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.8">Method-Normalized (÷ M methods)</text>
+    <rect x="315" y="155" width="150" height="15" rx="7.5" fill="#0B7285"/>
+    <text x="390" y="166" text-anchor="middle" fill="#FFFFFF" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">p50: 1.58 ms | Mean: 7.54 ms</text>
+
+    <!-- 3 Metric Category Cards -->
+    <rect x="288" y="188" width="204" height="92" rx="7" fill="#FFFFFF" stroke="#3B5BDB" stroke-width="1.2"/>
+    <rect x="288" y="188" width="6" height="92" rx="3" fill="#3B5BDB"/>
+    <text x="302" y="206" fill="#3B5BDB" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.8" font-weight="700">Complexity Metrics (4)</text>
+    <text x="302" y="222" fill="#334155" font-family="'Consolas', 'Courier New', monospace" font-size="9.6">m1: cyclomatic_complexity</text>
+    <text x="302" y="237" fill="#334155" font-family="'Consolas', 'Courier New', monospace" font-size="9.6">m2: cognitive_complexity</text>
+    <text x="302" y="252" fill="#334155" font-family="'Consolas', 'Courier New', monospace" font-size="9.6">m3: max_ast_depth</text>
+    <text x="302" y="267" fill="#334155" font-family="'Consolas', 'Courier New', monospace" font-size="9.6">m4: max_nesting_depth</text>
+
+    <rect x="288" y="292" width="204" height="82" rx="7" fill="#FFFFFF" stroke="#D9480F" stroke-width="1.2"/>
+    <rect x="288" y="292" width="6" height="82" rx="3" fill="#D9480F"/>
+    <text x="302" y="310" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.8" font-weight="700">Duplication &amp; Bloat (3)</text>
+    <text x="302" y="326" fill="#334155" font-family="'Consolas', 'Courier New', monospace" font-size="9.6">m5: ast_clone_ratio (WL hash)</text>
+    <text x="302" y="341" fill="#334155" font-family="'Consolas', 'Courier New', monospace" font-size="9.6">m6: token_4gram_overlap</text>
+    <text x="302" y="356" fill="#334155" font-family="'Consolas', 'Courier New', monospace" font-size="9.6">m7: halstead_volume</text>
+
+    <rect x="288" y="386" width="204" height="106" rx="7" fill="#FFFFFF" stroke="#0CA678" stroke-width="1.2"/>
+    <rect x="288" y="386" width="6" height="106" rx="3" fill="#0CA678"/>
+    <text x="302" y="404" fill="#087F5B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.8" font-weight="700">Maintainability &amp; DFG (5)</text>
+    <text x="302" y="420" fill="#334155" font-family="'Consolas', 'Courier New', monospace" font-size="9.6">m8:  dfg_edge_density</text>
+    <text x="302" y="435" fill="#334155" font-family="'Consolas', 'Courier New', monospace" font-size="9.6">m9:  mean_live_var_span</text>
+    <text x="302" y="450" fill="#334155" font-family="'Consolas', 'Courier New', monospace" font-size="9.6">m10: fan_out_calls (external)</text>
+    <text x="302" y="465" fill="#334155" font-family="'Consolas', 'Courier New', monospace" font-size="9.6">m11: local_var_param_count</text>
+    <text x="302" y="480" fill="#334155" font-family="'Consolas', 'Courier New', monospace" font-size="9.6">m12: sloc (per-method)</text>
+
+    <rect x="288" y="502" width="204" height="26" rx="6" fill="#162A4A"/>
+    <text x="390" y="519" text-anchor="middle" fill="#FFFFFF" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="600">Output: m(x) ∈ ℝ¹² (Train-Fit Robust Z)</text>
+    
+
+    <line x1="255" y1="440" x2="273" y2="440" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M 227 420 C 262 420, 260 145, 286 145" fill="none" stroke="#0B7285" stroke-width="1.7" marker-end="url(#arrow)"/>
+    
+
+    <g filter="url(#softShadow)">
+      <rect x="525" y="72" width="355" height="468" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.3"/>
+      <rect x="525" y="72" width="355" height="32" rx="10" fill="#364FC7"/>
+      <rect x="525" y="92" width="355" height="12" fill="#364FC7"/>
+      <text x="702.5" y="93" text-anchor="middle" fill="#FFFFFF" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="700">PHASE 3: DUAL-TRACK EVALUATION</text>
+    </g>
+
+    <!-- Track A Container -->
+    <rect x="537" y="114" width="331" height="236" rx="8" fill="#FFFFFF" stroke="#3B5BDB" stroke-width="1.5"/>
+    <rect x="537" y="114" width="331" height="24" rx="8" fill="#EDF2FF"/>
+    <text x="548" y="130" fill="#364FC7" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.8" font-weight="700">TRACK A: DISCRIMINATIVE RANKING &amp; MULTI-OBJECTIVE RL</text>
+
+    <!-- Two Modality Inputs -->
+    <rect x="548" y="148" width="148" height="48" rx="6" fill="#F1F5F9" stroke="#3B5BDB" stroke-width="1.1"/>
+    <text x="622" y="166" text-anchor="middle" fill="#1E3A5F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">768-D Code + AST + DFG</text>
+    <text x="622" y="182" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2">Structural / GraphCodeBERT</text>
+
+    <rect x="708" y="148" width="148" height="48" rx="6" fill="#E6FCF5" stroke="#0CA678" stroke-width="1.1"/>
+    <text x="782" y="166" text-anchor="middle" fill="#087F5B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">64-D Static Projection</text>
+    <text x="782" y="182" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2">12-D → LayerNorm + GELU</text>
+
+    <!-- Fusion Bar -->
+    <line x1="622" y1="196" x2="660" y2="214" stroke="#3B5BDB" stroke-width="1.5" marker-end="url(#arrowIndigo)"/>
+    <line x1="782" y1="196" x2="744" y2="214" stroke="#0CA678" stroke-width="1.5" marker-end="url(#arrowTeal)"/>
+
+    <rect x="560" y="216" width="284" height="32" rx="6" fill="url(#gradIndigo)"/>
+    <text x="702" y="236" text-anchor="middle" fill="#FFFFFF" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="700">Multimodal Fusion Tower: [768 ; 64] → 256-D Latent z(x)</text>
+
+    <!-- 4 Learning Paradigms -->
+    <line x1="610" y1="248" x2="585" y2="266" stroke="#475569" stroke-width="1.3" marker-end="url(#arrow)"/>
+    <line x1="670" y1="248" x2="663" y2="266" stroke="#475569" stroke-width="1.3" marker-end="url(#arrow)"/>
+    <line x1="734" y1="248" x2="741" y2="266" stroke="#475569" stroke-width="1.3" marker-end="url(#arrow)"/>
+    <line x1="794" y1="248" x2="819" y2="266" stroke="#0CA678" stroke-width="1.5" marker-end="url(#arrowTeal)"/>
+
+    <rect x="546" y="269" width="74" height="68" rx="6" fill="#F8FAFC" stroke="#64748B" stroke-width="1.1"/>
+    <text x="583" y="287" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="700">XGBoost</text>
+    <text x="583" y="301" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.6">Delta Δm</text>
+    <text x="583" y="316" text-anchor="middle" fill="#3B5BDB" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9" font-weight="700">98.7% ID</text>
+    <text x="583" y="329" text-anchor="middle" fill="#64748B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.5">58.7% OOD</text>
+
+    <rect x="626" y="269" width="76" height="68" rx="6" fill="#E6FCF5" stroke="#0CA678" stroke-width="1.5"/>
+    <text x="664" y="287" text-anchor="middle" fill="#087F5B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="700">Pointwise</text>
+    <text x="664" y="301" text-anchor="middle" fill="#087F5B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.6">MSE Debt</text>
+    <text x="664" y="316" text-anchor="middle" fill="#087F5B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9" font-weight="700">99.1% ID</text>
+    <text x="664" y="329" text-anchor="middle" fill="#087F5B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.8" font-weight="700">85.8% OOD★</text>
+
+    <rect x="708" y="269" width="74" height="68" rx="6" fill="#EDF2FF" stroke="#3B5BDB" stroke-width="1.3"/>
+    <text x="745" y="287" text-anchor="middle" fill="#364FC7" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="700">Bradley-Terry</text>
+    <text x="745" y="301" text-anchor="middle" fill="#364FC7" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.6">Siamese Pair</text>
+    <text x="745" y="316" text-anchor="middle" fill="#364FC7" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9" font-weight="700">99.6% ID★</text>
+    <text x="745" y="329" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.5">67.0% OOD</text>
+
+    <rect x="788" y="269" width="72" height="68" rx="6" fill="#FFF4E6" stroke="#E67700" stroke-width="1.5"/>
+    <text x="824" y="286" text-anchor="middle" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3" font-weight="700">Dueling</text>
+    <text x="824" y="298" text-anchor="middle" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3" font-weight="700">2x-DQN</text>
+    <text x="824" y="313" text-anchor="middle" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.6">Gym MDP</text>
+    <text x="824" y="328" text-anchor="middle" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.8" font-weight="700">97.8% ID</text>
+
+    <!-- Track B Container -->
+    <rect x="537" y="362" width="331" height="166" rx="8" fill="#FFFFFF" stroke="#7048E8" stroke-width="1.5"/>
+    <rect x="537" y="362" width="331" height="24" rx="8" fill="#F3F0FF"/>
+    <text x="548" y="378" fill="#5F3DC4" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.8" font-weight="700">TRACK B: BIDIRECTIONAL BLIND CODELLM AUDIT</text>
+
+    <rect x="548" y="396" width="144" height="52" rx="6" fill="#F8F9FA" stroke="#7950F2" stroke-width="1.1"/>
+    <text x="620" y="413" text-anchor="middle" fill="#5F3DC4" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700">Swap-Order Protocol</text>
+    <text x="620" y="427" text-anchor="middle" fill="#475569" font-family="'Consolas', 'Courier New', monospace" font-size="9">Fwd: (Impl 1=A, Impl 2=B)</text>
+    <text x="620" y="440" text-anchor="middle" fill="#475569" font-family="'Consolas', 'Courier New', monospace" font-size="9">Rev: (Impl 1=B, Impl 2=A)</text>
+
+    <line x1="692" y1="422" x2="710" y2="422" stroke="#7048E8" stroke-width="1.5" marker-end="url(#arrowViolet)"/>
+
+    <rect x="713" y="396" width="145" height="52" rx="6" fill="url(#gradViolet)"/>
+    <text x="785.5" y="413" text-anchor="middle" fill="#FFFFFF" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700">Open-Weights CodeLLMs</text>
+    <text x="785.5" y="427" text-anchor="middle" fill="#EDE9FE" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9">Qwen2.5-Coder-7B</text>
+    <text x="785.5" y="440" text-anchor="middle" fill="#EDE9FE" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9">DeepSeek-6.7B • Llama-3-8B</text>
+
+    <rect x="548" y="458" width="310" height="58" rx="6" fill="#F3F0FF" stroke="#B197FC" stroke-width="1.1"/>
+    <text x="703" y="475" text-anchor="middle" fill="#5F3DC4" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700">4-Axis Structured JSON Engineering Rubric</text>
+    <text x="703" y="491" text-anchor="middle" fill="#334155" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">① Maintainability Reasoning   •   ② Complexity Awareness</text>
+    <text x="703" y="506" text-anchor="middle" fill="#334155" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">③ Duplication Detection       •   ④ Future Change Impact</text>
+    
+
+    <line x1="505" y1="220" x2="535" y2="220" stroke="#3B5BDB" stroke-width="1.8" marker-end="url(#arrowIndigo)"/>
+    <line x1="505" y1="435" x2="535" y2="435" stroke="#7048E8" stroke-width="1.8" marker-end="url(#arrowViolet)"/>
+    
+
+    <g filter="url(#softShadow)">
+      <rect x="900" y="72" width="200" height="468" rx="10" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.3"/>
+      <rect x="900" y="72" width="200" height="32" rx="10" fill="#087F5B"/>
+      <rect x="900" y="92" width="200" height="12" fill="#087F5B"/>
+      <text x="1000" y="93" text-anchor="middle" fill="#FFFFFF" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="700">PHASE 4: AUDIT SUITE</text>
+    </g>
+
+    <rect x="912" y="116" width="176" height="132" rx="7" fill="#FFFFFF" stroke="#3B5BDB" stroke-width="1.2"/>
+    <text x="1000" y="135" text-anchor="middle" fill="#364FC7" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.8" font-weight="700">Quantitative Metrics</text>
+    <text x="922" y="153" fill="#334155" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6">• Pairwise Acc (95% CI)</text>
+    <text x="922" y="170" fill="#334155" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6">• Length-Matched Acc</text>
+    <text x="922" y="187" fill="#334155" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6">• Spearman ρ vs. TDI</text>
+    <text x="922" y="204" fill="#334155" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6">• Macro-F1 Score</text>
+    <text x="922" y="221" fill="#087F5B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="600">• Modality &amp; Objective</text>
+    <text x="930" y="235" fill="#087F5B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="600">Ablations (ID + OOD)</text>
+
+    <rect x="912" y="262" width="176" height="132" rx="7" fill="#FFFFFF" stroke="#7048E8" stroke-width="1.2"/>
+    <text x="1000" y="281" text-anchor="middle" fill="#5F3DC4" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.8" font-weight="700">Bias &amp; Reasoning Audit</text>
+    <text x="922" y="299" fill="#334155" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6">• Strict Swap Acc (Acc_strict)</text>
+    <text x="922" y="316" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6" font-weight="600">• Position Bias Rate (PBR)</text>
+    <text x="922" y="333" fill="#334155" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6">• Selection-Reasoning</text>
+    <text x="930" y="347" fill="#334155" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6">Consistency (SRCR)</text>
+    <text x="922" y="364" fill="#334155" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6">• 4-Axis Dimension Recall</text>
+    <text x="922" y="381" fill="#5F3DC4" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.4" font-weight="600">• Extract Method Audit</text>
+
+    <rect x="912" y="408" width="176" height="120" rx="7" fill="#162A4A"/>
+    <text x="1000" y="428" text-anchor="middle" fill="#74C0FC" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="700">KEY HEADLINE FINDINGS</text>
+    <text x="922" y="448" fill="#FFFFFF" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6">✓ 99.55% ID (Bradley-Terry)</text>
+    <text x="922" y="466" fill="#63E6BE" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6" font-weight="700">✓ 85.78% OOD (Pointwise)</text>
+    <text x="922" y="484" fill="#FFD43B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6">✓ 97.75% ID (Dueling DQN)</text>
+    <text x="922" y="502" fill="#FFA8A8" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6">! 26.8–37.6% OOD LLM PBR</text>
+    <text x="922" y="518" fill="#CBD5E1" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9">✓ +20.3pp via Method Norm.</text>
+
+    <line x1="880" y1="220" x2="898" y2="220" stroke="#3B5BDB" stroke-width="1.8" marker-end="url(#arrowIndigo)"/>
+    <line x1="880" y1="435" x2="898" y2="435" stroke="#7048E8" stroke-width="1.8" marker-end="url(#arrowViolet)"/>
+    
+</svg>
+      <figcaption><strong>Fig. 1.</strong> End-to-end four-phase dual-track architecture. Phase 1 curates 7,650 AST-canonicalized Java snippets (2,341 pairs) across IBM CodeNet Java250 and SWE-Refactor with zero group leakage. Phase 2 computes 12 method-normalized Tree-Sitter AST/DFG metrics at 1.58 ms median latency. Phase 3 evaluates Track A (multimodal fusion across XGBoost, Pointwise MSE, Bradley-Terry, and Gymnasium Dueling Double-DQN) and Track B (bidirectional blind CodeLLM rubric audit). Phase 4 exports bootstrap CIs, ablations, and bias diagnostics.</figcaption>
+    </figure>
+  </div>
+
+  <h3>A. Phase 1: Verified Dual-Corpus Pipeline</h3>
+  <p>Every snippet in our corpus passes 100% of functional tests: (1) <strong>IBM CodeNet Java250</strong> [15] provides 75,000 accepted solutions across 250 algorithmic tasks, stratified-sampled into 5,976 unique snippets and 1,504 pairs contrasting bottom-decile (Patch <i>A</i>) vs. top-decile (Patch <i>B</i>) SQALE debt (&Delta;TDI &ge; 5.0 min); (2) <strong>SWE-Refactor</strong> [2] provides real-world developer refactoring commits across 18 open-source Java repositories (<code>checkstyle</code>, <code>commons-lang</code>, <code>hibernate-orm</code>, <code>junit5</code>, <code>mockito</code>, <code>pmd</code>, etc.), retaining 837 verified pairs with enclosing class resolution and &Delta;TDI &gt; 0.</p>
+  <p>Four anti-leakage safeguards are enforced: (i) <strong>AST Byte-Span Comment Stripping</strong> via <code>tree-sitter-java</code> removes all comment nodes in reverse byte order without corrupting string literals; (ii) an independent <strong>SQALE Technical Debt Index</strong> (TDI<sub>SQ</sub>) models SonarJava rules <code>S138</code>, <code>S1541</code>, <code>S3776</code>, <code>S1067</code>, <code>S4144</code>, <code>S107</code>, <code>S1200</code>, and <code>S109</code>; (iii) <strong>Strict Group Splitting</strong> partitions CodeNet by <code>problem_id</code> into <code>train</code> (176), <code>val</code> (38), and <code>test</code> (37) with zero problem overlap while holding SWE-Refactor strictly as <code>ood_test</code>; and (iv) a <strong>Length-Matched Slice</strong> (1,178 pairs, 50.3%) enforces:</p>
+  <div class="eq-block">
+    <div class="eq-body">|SLOC(<i>x<sub>A</sub></i>) &minus; SLOC(<i>x<sub>B</sub></i>)| / max(SLOC(<i>x<sub>A</sub></i>), SLOC(<i>x<sub>B</sub></i>)) &le; 0.15</div>
+    <div class="eq-num">(1)</div>
+  </div>
+
+  <table>
+    <caption>Table I. Verified Dataset Composition in <code>patch_pairs.db</code></caption>
+    <thead>
+      <tr><th>Source</th><th>Split</th><th>Pairs</th><th>Groups</th><th>Len-Match</th><th>Mean &Delta;TDI</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>CodeNet</td><td><code>train</code></td><td>1,054</td><td>176 probs</td><td>537 (50.9%)</td><td>+73.70 m</td></tr>
+      <tr><td>CodeNet</td><td><code>val</code></td><td>228</td><td>38 probs</td><td>114 (50.0%)</td><td>+67.00 m</td></tr>
+      <tr><td>CodeNet</td><td><code>test</code></td><td>222</td><td>37 probs</td><td>114 (51.4%)</td><td>+73.18 m</td></tr>
+      <tr><td>SWE-Refactor</td><td><code>ood_test</code></td><td>837</td><td>18 repos</td><td>413 (49.3%)</td><td>+54.68 m</td></tr>
+      <tr class="hl-row"><td>Total</td><td>All</td><td>2,341</td><td>269</td><td>1,178 (50.3%)</td><td>+66.20 m</td></tr>
+    </tbody>
+  </table>
+
+  <h3>B. Phase 2: Method-Normalized 12-Metric Tree-Sitter Engine</h3>
+  <p>Because classical refactorings such as <em>Extract Method</em> decompose one monolithic method into <i>M</i> &ge; 2 modular helpers, summing metrics across an entire file penalizes helper extraction. Given <i>M</i> = max(1, |&#8499;|) method/constructor declarations in syntax tree <i>T</i>, our engine computes 12 method-normalized metrics <strong>m</strong>(<i>x</i>) &isin; &#8477;<sup>12</sup> (Table II) across Complexity (<i>m</i><sub>1</sub>&ndash;<i>m</i><sub>4</sub>), Duplication (<i>m</i><sub>5</sub>&ndash;<i>m</i><sub>7</sub> via bottom-up Weisfeiler-Lehman AST subtree hashing and normalized 4-gram overlap), and Maintainability &amp; Intra-Procedural DFG Coupling (<i>m</i><sub>8</sub>&ndash;<i>m</i><sub>12</sub>, excluding internal helper invocations from external fan-out). Across all 7,650 snippets, median latency is <strong>1.58 ms</strong>, mean latency is <strong>7.54 ms</strong>, and <i>p</i><sub>95</sub> is <strong>48.64 ms</strong> (&lt;50 ms SLA, Fig. 4a).</p>
+
+  <div class="span-full">
+    <table>
+      <caption>Table II. Method-Normalized 12-Metric Tree-Sitter Feature Space &amp; Empirical Pairwise Deltas (Patch B &minus; Patch A)</caption>
+      <thead>
+        <tr><th>Category</th><th>Metric (<i>m<sub>i</sub></i>)</th><th style="text-align:left;">Formal AST / Intra-Procedural DFG Definition (<i>M</i> = max(1, |&#8499;|))</th><th>CodeNet &Delta;</th><th>SWE OOD &Delta;</th></tr>
+      </thead>
+      <tbody>
+        <tr><td rowspan="4"><strong>Complexity (4)</strong></td><td><i>m</i><sub>1</sub>: <code>cyclomatic_complexity</code></td><td style="text-align:left;">(1/<i>M</i>) &middot; [1 + &Sigma; I(branch, loop, catch, ternary, <code>&amp;&amp;</code>, <code>||</code>)]</td><td>+2.983</td><td>+1.732</td></tr>
+        <tr><td><i>m</i><sub>2</sub>: <code>cognitive_complexity</code></td><td style="text-align:left;">(1/<i>M</i>) &middot; &Sigma; [(1 + <i>d<sub>n</sub></i>) &middot; I(nestable) + I(<code>else</code>, labeled <code>break</code>, bool seq)]</td><td>+4.884</td><td>+2.563</td></tr>
+        <tr><td><i>m</i><sub>3</sub>: <code>max_ast_depth</code></td><td style="text-align:left;">max<sub><i>v</i>&isin;Leaves(<i>T</i>)</sub> dist<sub>AST</sub>(root, <i>v</i>) (&minus;2 if wrapper class added)</td><td>+1.765</td><td>+0.699</td></tr>
+        <tr><td><i>m</i><sub>4</sub>: <code>max_nesting_depth</code></td><td style="text-align:left;">max<sub><i>n</i>&isin;<i>T</i></sub> <i>d<sub>n</sub></i> (maximum control-flow block nesting depth)</td><td>+0.755</td><td>+0.178</td></tr>
+        <tr><td rowspan="3"><strong>Duplication (3)</strong></td><td><i>m</i><sub>5</sub>: <code>ast_clone_ratio</code></td><td style="text-align:left;">Fraction of AST nodes in repeated WL subtree hashes (|<i>r</i>| &ge; 6, ID/LIT normalized)</td><td>+0.153</td><td>+0.020</td></tr>
+        <tr><td><i>m</i><sub>6</sub>: <code>token_4gram_overlap</code></td><td style="text-align:left;">1 &minus; |Unique-4Grams(&tau;<sub>body</sub>)| / |Total-4Grams(&tau;<sub>body</sub>)| over normalized body tokens</td><td>+0.181</td><td>+0.014</td></tr>
+        <tr><td><i>m</i><sub>7</sub>: <code>halstead_volume</code></td><td style="text-align:left;">(1/<i>M</i>) &middot; (<i>N</i><sub>1</sub> + <i>N</i><sub>2</sub>) log<sub>2</sub>(&eta;<sub>1</sub> + &eta;<sub>2</sub>) over operator/operand leaves</td><td>+388.0</td><td>+217.7</td></tr>
+        <tr><td rowspan="5"><strong>Maintainability &amp; DFG (5)</strong></td><td><i>m</i><sub>8</sub>: <code>dfg_edge_density</code></td><td style="text-align:left;">|<i>E</i><sub>def-use</sub>| / (|<i>V</i><sub>vars</sub>| + <i>M</i>) across intra-procedural defs, compound updates, and reads</td><td>+0.832</td><td>+0.282</td></tr>
+        <tr><td><i>m</i><sub>9</sub>: <code>mean_live_var_span</code></td><td style="text-align:left;">Mean(line<sub>last_use</sub>(<i>v</i>) &minus; line<sub>first_def</sub>(<i>v</i>)) over all intra-procedural variables</td><td>+3.251</td><td>+1.813</td></tr>
+        <tr><td><i>m</i><sub>10</sub>: <code>fan_out_calls</code></td><td style="text-align:left;">(1/<i>M</i>) &middot; (|external method calls &notin; &#8499;<sub>internal</sub>| + |<code>new</code> object creations|)</td><td>+3.879</td><td>+4.216</td></tr>
+        <tr><td><i>m</i><sub>11</sub>: <code>local_var_param_count</code></td><td style="text-align:left;">(1/<i>M</i>) &middot; (|local declarators| + |formal parameters| + |enhanced-for vars|)</td><td>+2.590</td><td>+0.994</td></tr>
+        <tr><td><i>m</i><sub>12</sub>: <code>sloc</code></td><td style="text-align:left;">(1/<i>M</i>) &middot; |non-comment source lines| (per-method normalized SLOC)</td><td>+10.59</td><td>+6.323</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>IV. Dual-Track Methodology</h2>
+  <h3>A. Track A: Multimodal Fusion &amp; Supervised Objectives</h3>
+  <p>Each normalized patch <i>x</i> yields: (1) a 768-D code/DFG vector <strong>e</strong><sub>code</sub>(<i>x</i>) partitioned across lexical subword <i>n</i>-grams [0:384], AST grammar productions [384:576], and intra-procedural DFG transitions [576:768] (supporting HuggingFace <code>GraphCodeBERT</code> [16] and a deterministic cached AST+DFG encoder used in Phase 4 for CPU reproducibility); and (2) a 64-D static projection <strong>e</strong><sub>stat</sub>(<i>x</i>) = <strong>W</strong><sub>s2</sub> GELU(LN(<strong>W</strong><sub>s1</sub> <strong>m&#771;</strong>(<i>x</i>) + <strong>b</strong><sub>s1</sub>)) + <strong>b</strong><sub>s2</sub> using a leak-free Robust Z-Score scaler fit strictly on <code>train</code>. The fusion tower maps [<i>&alpha;</i><sub>mod</sub><strong>e</strong><sub>code</sub>; <strong>e</strong><sub>stat</sub>] &isin; &#8477;<sup>832</sup> &rarr; <strong>z</strong>(<i>x</i>) &isin; &#8477;<sup>256</sup> and scalar utility <i>s<sub>&theta;</sub></i>(<i>x</i>) = <strong>w</strong><sub><i>s</i></sub><sup>&top;</sup><strong>z</strong>(<i>x</i>) + <strong>w</strong><sub>skip</sub><sup>&top;</sup><strong>e</strong><sub>stat</sub>(<i>x</i>) + <i>b<sub>s</sub></i>.</p>
+  <p>We compare three supervised baselines&mdash;<strong>Tabular XGBoost</strong> [26] on &Delta;<strong>m</strong> (160 trees, depth 4), <strong>Pointwise Debt Regression (MSE)</strong> onto standardized <i>y</i>(<i>x</i>) = &minus;log(1 + TDI<sub>SQ</sub>(<i>x</i>)), and <strong>Siamese Bradley-Terry</strong> minimizing &minus;log &sigma;(<i>s<sub>&theta;</sub></i>(<i>x<sub>A</sub></i>) &minus; <i>s<sub>&theta;</sub></i>(<i>x<sub>B</sub></i>)) + &Omega;(&theta;)&mdash;against our Multi-Objective RL agent below.</p>
+
+  <h3>B. Multi-Objective RL: PatchRankingEnv &amp; Dueling Double-DQN</h3>
+  <p>We formulate sequential candidate patch triage as a Gymnasium MDP &#8499; = (&#119982;, &#119964;, <i>P</i>, <i>R</i>, &gamma;, <i>H</i>) (Fig. 2a). Following an 18-epoch multimodal warm-up, each patch yields a 64-D feature <strong>f</strong>(<i>x</i>) = Pool<sub>4&rarr;1</sub>(<strong>z</strong>(<i>x</i>)) + <strong>e</strong><sub>stat</sub>(<i>x</i>). At step <i>t</i> &isin; {0,&hellip;,<i>H</i>&minus;1} (<i>H</i> = 48), the environment randomly flips slot order (<i>b<sub>t</sub></i> ~ Bernoulli(0.5)) to eliminate positional bias and constructs the symmetric interaction state:</p>
+  <div class="eq-block">
+    <div class="eq-body"><strong>s</strong><sub><i>t</i></sub> = [ <strong>f</strong><sub>1</sub> ; <strong>f</strong><sub>2</sub> ; <strong>f</strong><sub>1</sub> &minus; <strong>f</strong><sub>2</sub> ; <strong>f</strong><sub>1</sub> &odot; <strong>f</strong><sub>2</sub> ] &isin; &#8477;<sup>256</sup>, &nbsp;&nbsp; <i>a<sub>t</sub></i> &isin; {0, 1}.</div>
+    <div class="eq-num">(2)</div>
+  </div>
+  <p>Selecting action <i>a<sub>t</sub></i> over alternative <i>&amacr;<sub>t</sub></i> yields a dense, bounded 4-component multi-objective reward balancing test correctness, SQALE debt reduction, cognitive/nesting complexity, and clone avoidance:</p>
+  <div class="eq-block">
+    <div class="eq-body"><i>R</i>(<strong>s</strong><sub><i>t</i></sub>, <i>a<sub>t</sub></i>) = <i>w</i><sub>p</sub> I[pass(<i>a<sub>t</sub></i>)] + <i>w</i><sub>d</sub> tanh(&Delta;TDI / 25) + <i>w</i><sub>c</sub> tanh(&Delta;<sub>cog,nest</sub>) + <i>w</i><sub>u</sub> tanh(&Delta;<sub>clone,4g</sub>)</div>
+    <div class="eq-num">(3)</div>
+  </div>
+  <p>with weights (<i>w</i><sub>p</sub>, <i>w</i><sub>d</sub>, <i>w</i><sub>c</sub>, <i>w</i><sub>u</sub>) = (1.0, 2.0, 0.75, 0.75). Our <strong>Dueling Double-DQN</strong> network [6], [7] decomposes <i>Q<sub>&phi;</sub></i>(<strong>s</strong>, <i>a</i>) = <i>V<sub>&phi;</sub></i>(<strong>s</strong>) + (<i>A<sub>&phi;</sub></i>(<strong>s</strong>, <i>a</i>) &minus; mean<sub><i>a</i>&prime;</sub> <i>A<sub>&phi;</sub></i>(<strong>s</strong>, <i>a</i>&prime;)) via a 128-D GELU shared layer, decouples action selection (online &phi;) from target evaluation (Polyak target &phi;<sup>&minus;</sup>, &tau; = 0.08, &gamma; = 0.90), and minimizes Smooth-L1 Huber TD loss (|&delta;| &le; 2.0) over an 8,192-transition circular replay buffer (Algorithm 1, Table III).</p>
+
+  <div class="algo-box">
+    <div class="algo-title">Algorithm 1: Multi-Objective Dueling Double-DQN for Patch Triage</div>
+    <ol>
+      <li>Fit leak-free <code>RobustMetricNormalizer</code> on <code>train</code>; warm-up encoder (18 epochs) &rarr; <strong>f</strong>(<i>x</i>) &isin; &#8477;<sup>64</sup>.</li>
+      <li>Initialize online <i>Q<sub>&phi;</sub></i>, target <i>Q<sub>&phi;<sup>&minus;</sup></sub></i> &larr; <i>Q<sub>&phi;</sub></i>, replay buffer &#8492; (cap 8,192), &epsilon; &larr; 0.35.</li>
+      <li><strong>For</strong> episode = 1 &hellip; 45 <strong>do</strong>: Reset <code>PatchRankingEnv</code> (<i>H</i> = 48, random slot flips <i>b<sub>t</sub></i>).</li>
+      <li>&nbsp;&nbsp;<strong>For</strong> <i>t</i> = 0 &hellip; <i>H</i>&minus;1 <strong>do</strong>: Choose <i>a<sub>t</sub></i> via &epsilon;-greedy over <i>Q<sub>&phi;</sub></i>(<strong>s</strong><sub><i>t</i></sub>, <i>a</i>); observe reward <i>r<sub>t</sub></i> (Eq. 3) &amp; <strong>s</strong><sub><i>t</i>+1</sub>; push to &#8492;.</li>
+      <li>&nbsp;&nbsp;If |&#8492;| &ge; 64: sample batch 64; compute Double-DQN target <i>y<sub>j</sub></i> = <i>r<sub>j</sub></i> + &gamma;(1&minus;<i>d<sub>j</sub></i>) <i>Q<sub>&phi;<sup>&minus;</sup></sub></i>(<strong>s</strong>&prime;<sub><i>j</i></sub>, argmax <i>Q<sub>&phi;</sub></i>(<strong>s</strong>&prime;<sub><i>j</i></sub>, &middot;)).</li>
+      <li>&nbsp;&nbsp;Update &phi; via Adam (lr = 2&times;10<sup>&minus;3</sup>) on Huber TD loss; soft-update &phi;<sup>&minus;</sup> &larr; 0.92 &phi;<sup>&minus;</sup> + 0.08 &phi;.</li>
+      <li>&nbsp;&nbsp;Decay &epsilon; &larr; max(0.03, 0.94 &epsilon;). <strong>Return</strong> optimal greedy policy &pi;*(<strong>s</strong>) = argmax<sub><i>a</i></sub> <i>Q<sub>&phi;</sub></i>(<strong>s</strong>, <i>a</i>).</li>
+    </ol>
+  </div>
+
+  <table>
+    <caption>Table III. Track A &amp; Dueling Double-DQN Hyperparameters</caption>
+    <thead>
+      <tr><th>Module</th><th>Hyperparameter</th><th>Setting</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Fusion Tower</td><td>Code / Static / Latent Dims</td><td>768 / 64 / 256</td></tr>
+      <tr><td>XGBoost</td><td>Trees / Depth / LR / &lambda;</td><td>160 / 4 / 0.06 / 1.5</td></tr>
+      <tr><td>Dueling Q-Net</td><td>State / Hidden / Actions</td><td>256 / 128 (GELU) / 2</td></tr>
+      <tr><td>RL Updates</td><td>&gamma; / Polyak &tau; / Adam LR</td><td>0.90 / 0.08 / 2&times;10<sup>&minus;3</sup></td></tr>
+      <tr><td>Exploration</td><td>&epsilon;<sub>start</sub> &rarr; &epsilon;<sub>end</sub> (decay)</td><td>0.35 &rarr; 0.03 (0.94)</td></tr>
+      <tr><td>Replay/Horizon</td><td>|&#8492;| / Batch / Horizon / Eps</td><td>8,192 / 64 / 48 / 45</td></tr>
+    </tbody>
+  </table>
+
+  <div class="span-full">
+    <figure>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 440" width="1120" height="440" role="img" aria-label="Dueling Double-DQN Multimodal Architecture and Training Learning Curve">
+  <defs>
+    <filter id="shadow" x="-6%" y="-6%" width="114%" height="118%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0F172A" flood-opacity="0.08"/>
+    </filter>
+    <filter id="softShadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#0F172A" flood-opacity="0.06"/>
+    </filter>
+    <linearGradient id="gradNavy" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#162A4A"/>
+      <stop offset="100%" stop-color="#27477A"/>
+    </linearGradient>
+    <linearGradient id="gradIndigo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B5BDB"/>
+      <stop offset="100%" stop-color="#5C7CFA"/>
+    </linearGradient>
+    <linearGradient id="gradTeal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#099268"/>
+      <stop offset="100%" stop-color="#20C997"/>
+    </linearGradient>
+    <linearGradient id="gradViolet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6741D9"/>
+      <stop offset="100%" stop-color="#845EF7"/>
+    </linearGradient>
+    <linearGradient id="gradAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D9480F"/>
+      <stop offset="100%" stop-color="#F76707"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#475569"/>
+    </marker>
+    <marker id="arrowIndigo" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#3B5BDB"/>
+    </marker>
+    <marker id="arrowTeal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#0CA678"/>
+    </marker>
+    <marker id="arrowViolet" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#7048E8"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="440" fill="#FFFFFF" rx="6"/>
+
+
+    <rect x="14" y="14" width="540" height="412" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="284" y="38" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="13.5" font-weight="700">
+      (a) PatchRankingEnv MDP &amp; Dueling Double-DQN Architecture
+    </text>
+
+    <!-- Candidate Inputs -->
+    <rect x="28" y="56" width="128" height="44" rx="6" fill="#FFFFFF" stroke="#3B5BDB" stroke-width="1.3"/>
+    <text x="92" y="74" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">Candidate Slot 1 (x₁)</text>
+    <text x="92" y="90" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9">f₁ ∈ ℝ⁶⁴ (Multimodal)</text>
+
+    <rect x="172" y="56" width="128" height="44" rx="6" fill="#FFFFFF" stroke="#0CA678" stroke-width="1.3"/>
+    <text x="236" y="74" text-anchor="middle" fill="#087F5B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">Candidate Slot 2 (x₂)</text>
+    <text x="236" y="90" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9">f₂ ∈ ℝ⁶⁴ (Randomized)</text>
+
+    <!-- Interaction State -->
+    <line x1="92" y1="100" x2="140" y2="122" stroke="#3B5BDB" stroke-width="1.4" marker-end="url(#arrowIndigo)"/>
+    <line x1="236" y1="100" x2="188" y2="122" stroke="#0CA678" stroke-width="1.4" marker-end="url(#arrowTeal)"/>
+
+    <rect x="28" y="125" width="272" height="40" rx="6" fill="#EDF2FF" stroke="#3B5BDB" stroke-width="1.4"/>
+    <text x="164" y="142" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.3" font-weight="700">Symmetric Interaction State sₜ ∈ ℝ²⁵⁶</text>
+    <text x="164" y="157" text-anchor="middle" fill="#3B5BDB" font-family="'Consolas', 'Courier New', monospace" font-size="9.5">sₜ = [ f₁ ; f₂ ; f₁ − f₂ ; f₁ ⊙ f₂ ]</text>
+
+    <!-- Shared Backbone -->
+    <line x1="164" y1="165" x2="164" y2="184" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <rect x="52" y="187" width="224" height="32" rx="6" fill="url(#gradNavy)"/>
+    <text x="164" y="207" text-anchor="middle" fill="#FFFFFF" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.3" font-weight="700">Shared Encoder: Linear(256→128) + GELU</text>
+
+    <!-- Dueling Split -->
+    <line x1="114" y1="219" x2="94" y2="241" stroke="#3B5BDB" stroke-width="1.5" marker-end="url(#arrowIndigo)"/>
+    <line x1="214" y1="219" x2="234" y2="241" stroke="#E67700" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <rect x="28" y="244" width="124" height="46" rx="6" fill="#FFFFFF" stroke="#3B5BDB" stroke-width="1.4"/>
+    <text x="90" y="263" text-anchor="middle" fill="#3B5BDB" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="700">Value Stream</text>
+    <text x="90" y="279" text-anchor="middle" fill="#475569" font-family="'Consolas', 'Courier New', monospace" font-size="9.5">V(sₜ) ∈ ℝ¹</text>
+
+    <rect x="176" y="244" width="124" height="46" rx="6" fill="#FFFFFF" stroke="#E67700" stroke-width="1.4"/>
+    <text x="238" y="263" text-anchor="middle" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="700">Advantage Stream</text>
+    <text x="238" y="279" text-anchor="middle" fill="#475569" font-family="'Consolas', 'Courier New', monospace" font-size="9.5">A(sₜ, a) ∈ ℝ²</text>
+
+    <!-- Aggregation -->
+    <line x1="90" y1="290" x2="140" y2="312" stroke="#3B5BDB" stroke-width="1.4" marker-end="url(#arrowIndigo)"/>
+    <line x1="238" y1="290" x2="188" y2="312" stroke="#E67700" stroke-width="1.4" marker-end="url(#arrow)"/>
+
+    <rect x="28" y="315" width="272" height="40" rx="6" fill="url(#gradTeal)"/>
+    <text x="164" y="332" text-anchor="middle" fill="#FFFFFF" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">Dueling Aggregation &amp; Action Selection</text>
+    <text x="164" y="347" text-anchor="middle" fill="#E6FCF5" font-family="'Consolas', 'Courier New', monospace" font-size="9.4">Q(s,a) = V(s) + (A(s,a) − mean A) → a*∈{0,1}</text>
+
+    <!-- Replay & Target Network (Right side of Left Panel) -->
+    <rect x="318" y="56" width="222" height="148" rx="7" fill="#FFF9DB" stroke="#E67700" stroke-width="1.3"/>
+    <text x="429" y="75" text-anchor="middle" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="700">Multi-Objective Reward R(sₜ, aₜ)</text>
+    <text x="328" y="95" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6" font-weight="600">1. Pass Guarantee (w=1.00):</text>
+    <text x="336" y="109" fill="#475569" font-family="'Consolas', 'Courier New', monospace" font-size="9">r_pass = 1.0 · I[pass(aₜ)]</text>
+    <text x="328" y="126" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6" font-weight="600">2. Debt Reduction (w=2.00):</text>
+    <text x="336" y="140" fill="#475569" font-family="'Consolas', 'Courier New', monospace" font-size="9">r_debt = 2.0·tanh(ΔTDI / 25)</text>
+    <text x="328" y="157" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6" font-weight="600">3. Complexity Risk (w=0.75):</text>
+    <text x="336" y="171" fill="#475569" font-family="'Consolas', 'Courier New', monospace" font-size="9">r_comp = 0.75·tanh(Δ_cog,nest)</text>
+    <text x="328" y="188" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.6" font-weight="600">4. Clone/DRY Penalty (w=0.75):</text>
+    <text x="336" y="200" fill="#475569" font-family="'Consolas', 'Courier New', monospace" font-size="9">r_dup  = 0.75·tanh(Δ_clone,4g)</text>
+
+    <rect x="318" y="218" width="222" height="137" rx="7" fill="#FFFFFF" stroke="#64748B" stroke-width="1.2"/>
+    <text x="429" y="237" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="700">Double-DQN Stabilization</text>
+    <text x="328" y="256" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">• Experience Replay: 8,192 transitions</text>
+    <text x="328" y="273" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">• Target Decoupling (Double-DQN):</text>
+    <text x="334" y="288" fill="#3B5BDB" font-family="'Consolas', 'Courier New', monospace" font-size="8.8">y = r + γ Q_tgt(s′, argmax Q_on)</text>
+    <text x="328" y="305" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">• Smooth-L1 Huber TD Loss (|δ|≤2)</text>
+    <text x="328" y="322" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">• Polyak Target Update (τ = 0.08)</text>
+    <text x="328" y="339" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">• ε-Greedy Decay: 0.35 → 0.03 (γ=0.9)</text>
+
+    <!-- Bottom summary strip -->
+    <rect x="28" y="368" width="512" height="44" rx="6" fill="#162A4A"/>
+    <text x="284" y="387" text-anchor="middle" fill="#FFFFFF" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">
+      Episode Horizon H = 48 Pairs  |  45 Training Episodes  |  Adam (lr = 2e-3, batch = 64)
+    </text>
+    <text x="284" y="403" text-anchor="middle" fill="#74C0FC" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">
+      Test Evaluation: 97.75% Pairwise Acc (CodeNet)  •  65.95% Zero-Shot OOD (66.83% Length-Matched OOD)
+    </text>
+    
+
+    <rect x="568" y="14" width="538" height="412" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="837" y="38" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="13.5" font-weight="700">
+      (b) Empirical Dueling Double-DQN Learning Curve (45 Episodes)
+    </text>
+    
+<rect x="626" y="66" width="412" height="290" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<line x1="626" y1="356.0" x2="1038" y2="356.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="618" y="360.0" text-anchor="end" fill="#3B5BDB" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">20</text>
+<text x="1046" y="360.0" text-anchor="start" fill="#0CA678" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">40%</text>
+<line x1="626" y1="283.5" x2="1038" y2="283.5" stroke="#E2E8F0" stroke-width="1"/>
+<text x="618" y="287.5" text-anchor="end" fill="#3B5BDB" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">60</text>
+<text x="1046" y="287.5" text-anchor="start" fill="#0CA678" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">55%</text>
+<line x1="626" y1="211.0" x2="1038" y2="211.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="618" y="215.0" text-anchor="end" fill="#3B5BDB" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">100</text>
+<text x="1046" y="215.0" text-anchor="start" fill="#0CA678" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">70%</text>
+<line x1="626" y1="138.5" x2="1038" y2="138.5" stroke="#E2E8F0" stroke-width="1"/>
+<text x="618" y="142.5" text-anchor="end" fill="#3B5BDB" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">140</text>
+<text x="1046" y="142.5" text-anchor="start" fill="#0CA678" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">85%</text>
+<line x1="626" y1="66.0" x2="1038" y2="66.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="618" y="70.0" text-anchor="end" fill="#3B5BDB" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">180</text>
+<text x="1046" y="70.0" text-anchor="start" fill="#0CA678" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">100%</text>
+<line x1="626.0" y1="66" x2="626.0" y2="356" stroke="#E2E8F0" stroke-width="0.8" stroke-dasharray="3,3"/>
+<text x="626.0" y="372" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">1</text>
+<line x1="710.3" y1="66" x2="710.3" y2="356" stroke="#E2E8F0" stroke-width="0.8" stroke-dasharray="3,3"/>
+<text x="710.3" y="372" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">10</text>
+<line x1="803.9" y1="66" x2="803.9" y2="356" stroke="#E2E8F0" stroke-width="0.8" stroke-dasharray="3,3"/>
+<text x="803.9" y="372" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">20</text>
+<line x1="897.5" y1="66" x2="897.5" y2="356" stroke="#E2E8F0" stroke-width="0.8" stroke-dasharray="3,3"/>
+<text x="897.5" y="372" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">30</text>
+<line x1="991.2" y1="66" x2="991.2" y2="356" stroke="#E2E8F0" stroke-width="0.8" stroke-dasharray="3,3"/>
+<text x="991.2" y="372" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">40</text>
+<line x1="1038.0" y1="66" x2="1038.0" y2="356" stroke="#E2E8F0" stroke-width="0.8" stroke-dasharray="3,3"/>
+<text x="1038.0" y="372" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">45</text>
+<text x="832.0" y="391" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.8" font-weight="600">Training Episode (H = 48 Candidate Pairs / Episode)</text>
+<text x="584" y="211.0" text-anchor="middle" fill="#3B5BDB" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="700" transform="rotate(-90 584 211.0)">Cumulative Episode Reward</text>
+<text x="1086" y="211.0" text-anchor="middle" fill="#0CA678" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="700" transform="rotate(90 1086 211.0)">Clean-Patch Win Rate (%)</text>
+<polygon points="626.0,356.0 626.0,238.9 635.4,219.0 644.7,216.7 654.1,189.4 663.5,184.1 672.8,188.0 682.2,187.9 691.5,182.5 700.9,181.0 710.3,172.9 719.6,159.6 729.0,155.5 738.4,144.9 747.7,142.7 757.1,144.0 766.5,139.3 775.8,137.2 785.2,136.6 794.5,129.3 803.9,134.8 813.3,133.2 822.6,134.4 832.0,134.6 841.4,133.3 850.7,126.2 860.1,125.4 869.5,124.7 878.8,126.0 888.2,127.0 897.5,132.4 906.9,138.3 916.3,133.8 925.6,130.2 935.0,128.5 944.4,119.8 953.7,114.3 963.1,114.3 972.5,114.1 981.8,110.5 991.2,119.2 1000.5,117.6 1009.9,115.8 1019.3,114.7 1028.6,116.5 1038.0,104.7 1038.0,356.0" fill="#3B5BDB" fill-opacity="0.09"/>
+<polyline points="626.0,327.1 635.4,192.8 644.7,196.7 654.1,159.3 663.5,207.7 672.8,190.3 682.2,166.7 691.5,216.1 700.9,159.0 710.3,180.3 719.6,182.7 729.0,126.6 738.4,149.3 747.7,138.4 757.1,127.4 766.5,172.0 775.8,132.9 785.2,125.7 794.5,128.1 803.9,124.1 813.3,135.8 822.6,160.4 832.0,117.8 841.4,134.0 850.7,125.0 860.1,129.4 869.5,125.1 878.8,113.4 888.2,130.7 897.5,131.5 906.9,134.4 916.3,152.1 925.6,143.0 935.0,107.8 944.4,113.9 953.7,125.8 963.1,108.7 972.5,115.5 981.8,107.4 991.2,113.2 1000.5,107.7 1009.9,152.0 1019.3,107.6 1028.6,98.5 1038.0,107.8" fill="none" stroke="#3B5BDB" stroke-width="1.3" stroke-opacity="0.38"/>
+<polyline points="626.0,238.9 635.4,219.0 644.7,216.7 654.1,189.4 663.5,184.1 672.8,188.0 682.2,187.9 691.5,182.5 700.9,181.0 710.3,172.9 719.6,159.6 729.0,155.5 738.4,144.9 747.7,142.7 757.1,144.0 766.5,139.3 775.8,137.2 785.2,136.6 794.5,129.3 803.9,134.8 813.3,133.2 822.6,134.4 832.0,134.6 841.4,133.3 850.7,126.2 860.1,125.4 869.5,124.7 878.8,126.0 888.2,127.0 897.5,132.4 906.9,138.3 916.3,133.8 925.6,130.2 935.0,128.5 944.4,119.8 953.7,114.3 963.1,114.3 972.5,114.1 981.8,110.5 991.2,119.2 1000.5,117.6 1009.9,115.8 1019.3,114.7 1028.6,116.5 1038.0,104.7" fill="none" stroke="#3B5BDB" stroke-width="2.6" stroke-linejoin="round"/>
+<polyline points="626.0,327.8 635.4,186.8 644.7,176.8 654.1,146.6 663.5,196.9 672.8,186.8 682.2,166.7 691.5,207.0 700.9,156.6 710.3,176.8 719.6,166.7 729.0,116.4 738.4,126.4 747.7,116.4 757.1,116.4 766.5,166.7 775.8,126.4 785.2,116.4 794.5,106.3 803.9,96.2 813.3,106.3 822.6,146.6 832.0,96.2 841.4,116.4 850.7,106.3 860.1,106.3 869.5,96.2 878.8,96.2 888.2,116.4 897.5,116.4 906.9,116.4 916.3,126.4 925.6,126.4 935.0,86.2 944.4,96.2 953.7,86.2 963.1,96.2 972.5,96.2 981.8,86.2 991.2,96.2 1000.5,76.1 1009.9,116.4 1019.3,76.1 1028.6,86.2 1038.0,76.1" fill="none" stroke="#0CA678" stroke-width="2.1" stroke-dasharray="6,3" stroke-linejoin="round"/>
+<circle cx="626.0" cy="327.1" r="4" fill="#3B5BDB" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="1028.6" cy="98.5" r="4.5" fill="#3B5BDB" stroke="#FFFFFF" stroke-width="1.4"/>
+<circle cx="1038.0" cy="76.1" r="4.5" fill="#0CA678" stroke="#FFFFFF" stroke-width="1.4"/>
+
+        <rect x="841.4" y="242" width="166" height="44" rx="6" fill="#FFFFFF" stroke="#0CA678" stroke-width="1.3" filter="url(#softShadow)"/>
+        <text x="924.4" y="260" text-anchor="middle" fill="#087F5B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.8" font-weight="700">Peak Win Rate: 97.9% (Ep 45)</text>
+        <text x="924.4" y="276" text-anchor="middle" fill="#3B5BDB" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.4" font-weight="600">Peak Reward: 162.1 (Ep 44)</text>
+        <line x1="991.2" y1="242" x2="1033.3" y2="84.1" stroke="#0CA678" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#arrowTeal)"/>
+
+        <text x="636.0" y="331.1" fill="#64748B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9" font-weight="600">Ep 1: R=35.9 (ε=0.35)</text>
+        
+
+    <rect x="626" y="396" width="412" height="22" rx="5" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <line x1="638" y1="407" x2="660" y2="407" stroke="#3B5BDB" stroke-width="2.6"/>
+    <text x="666" y="410.5" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3" font-weight="600">Reward (5-Ep MA)</text>
+    <line x1="766" y1="407" x2="788" y2="407" stroke="#3B5BDB" stroke-width="1.3" stroke-opacity="0.45"/>
+    <text x="794" y="410.5" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">Raw Reward</text>
+    <line x1="868" y1="407" x2="890" y2="407" stroke="#0CA678" stroke-width="2.1" stroke-dasharray="5,2.5"/>
+    <text x="896" y="410.5" fill="#087F5B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3" font-weight="600">Clean-Patch Win Rate</text>
+    
+</svg>
+      <figcaption><strong>Fig. 2.</strong> (a) Sequential candidate triage MDP (<code>PatchRankingEnv</code>) and Dueling Double-DQN architecture with symmetric interaction states <strong>s</strong><sub><i>t</i></sub> &isin; &#8477;<sup>256</sup>, decoupled Value/Advantage streams, and 4-component multi-objective reward shaping. (b) Real 45-episode training curve on CodeNet (<i>H</i> = 48 steps/episode): episode reward rises smoothly from 35.9 (45.8% win rate) to peak 162.1 and 97.9% clean-patch win rate.</figcaption>
+    </figure>
+  </div>
+
+  <h3>C. Track B: Bidirectional Blind CodeLLM Auditing</h3>
+  <p>Adopting <em>CodeJudgeBench</em> [1], every evaluated pair (<i>x<sub>A</sub></i>, <i>x<sub>B</sub></i>) is prompted <em>twice</em> anonymously: forward (<code>Impl 1</code>=<i>A</i>, <code>Impl 2</code>=<i>B</i>) and swapped (<code>Impl 1</code>=<i>B</i>, <code>Impl 2</code>=<i>A</i>). Judges output a strict JSON rubric across four axes: <code>maintainability_reasoning</code>, <code>complexity_awareness</code>, <code>duplication_detection</code>, and <code>future_change_impact</code>. Mapping both verdicts to {<i>A</i>, <i>B</i>}, we measure single-order Acc<sub>pref</sub>, strict order-invariant Acc<sub>strict</sub> = (1/<i>N</i>)&Sigma; I[<i>v</i><sub>fwd</sub>=<i>A</i> &and; <i>v</i><sub>rev</sub>=<i>A</i>], Position Bias Rate PBR = (1/<i>N</i>)&Sigma; I[<i>v</i><sub>fwd</sub> &ne; <i>v</i><sub>rev</sub>], Selection-Reasoning Consistency Rate (SRCR), and 4-axis recall. While <code>CodeLLMClient</code> integrates live Ollama/vLLM endpoints for <code>Qwen2.5-Coder-7B</code> [17], <code>DeepSeek-Coder-6.7B</code> [18], and <code>Meta-Llama-3-8B</code> [19], our reported Phase 4 audit executes deterministically via its calibrated AST-grounded offline rubric evaluator for full CPU reproducibility (Section VII).</p>
+
+  <h2>V. Experimental Results &amp; Ablations</h2>
+  <h3>A. RQ1 &amp; RQ3: Modality Impact &amp; Objective Comparison</h3>
+  <p>Tables IV and V (plotted with 95% bootstrap CIs in Fig. 3) summarize Track A performance across unseen <code>CodeNet test</code> (222 pairs) and zero-shot <code>SWE-Refactor ood_test</code> (837 pairs).</p>
+
+  <div class="span-full">
+    <table>
+      <caption>Table IV. Ablation Study 1 &mdash; Modality Impact (Siamese Bradley-Terry, In-Domain vs. Zero-Shot OOD)</caption>
+      <thead>
+        <tr><th>Modality Configuration</th><th>CodeNet Acc<sub>pref</sub> (95% CI)</th><th>CodeNet Len-Match</th><th>CodeNet &rho;</th><th>CodeNet F1</th><th>SWE OOD Acc<sub>pref</sub></th><th>SWE OOD &rho;</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Static Metrics Only (12 &rarr; 64-D)</td><td>99.55% ([98.7, 100.0])</td><td>99.12%</td><td>0.9342</td><td>0.9955</td><td><strong>67.14%</strong></td><td><strong>0.7027</strong></td></tr>
+        <tr><td>Code+DFG Structural Only (768-D)</td><td>98.20% ([96.4, 99.8])</td><td>96.49%</td><td>0.9088</td><td>0.9820</td><td>62.60%</td><td>0.4677</td></tr>
+        <tr class="hl-row"><td>Full Multimodal Fusion (832 &rarr; 256-D)</td><td>99.55% ([98.7, 100.0])</td><td>99.12%</td><td>0.9350</td><td>0.9955</td><td>66.91%</td><td>0.7019</td></tr>
+      </tbody>
+    </table>
+
+    <table>
+      <caption>Table V. Ablation Study 2 &mdash; Training Objective Comparison (Supervised vs. Multi-Objective Dueling Double-DQN)</caption>
+      <thead>
+        <tr><th>Training Objective</th><th>CodeNet Acc<sub>pref</sub> (95% CI)</th><th>CN Len-Match</th><th>CN &rho;</th><th>CN F1</th><th>SWE OOD Acc<sub>pref</sub> (95% CI)</th><th>SWE Len-Match</th><th>SWE &rho;</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Tabular XGBoost (&Delta;<strong>m</strong>)</td><td>98.65% ([96.9, 100.0])</td><td>98.25%</td><td>0.9761</td><td>0.9865</td><td>58.66% ([55.7, 61.8])</td><td>56.90%</td><td>0.7484</td></tr>
+        <tr class="hl-row"><td>Pointwise Regression (MSE)</td><td>99.10% ([97.8, 100.0])</td><td>98.25%</td><td>0.9817</td><td>0.9910</td><td>85.78% ([83.6, 88.0])</td><td>77.97%</td><td>0.8407</td></tr>
+        <tr><td>Siamese Bradley-Terry Loss</td><td><strong>99.55%</strong> ([98.7, 100.0])</td><td><strong>99.12%</strong></td><td>0.9307</td><td><strong>0.9955</strong></td><td>67.03% ([64.0, 70.3])</td><td>64.89%</td><td>0.6932</td></tr>
+        <tr><td><strong>Dueling Double-DQN (RL)</strong></td><td>97.75% ([96.0, 99.6])</td><td>95.61%</td><td>0.8774</td><td>0.9775</td><td>65.95% ([62.4, 69.2])</td><td><strong>66.83%</strong></td><td>0.6097</td></tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 445" width="1120" height="445" role="img" aria-label="Ablation Studies: Modality Impact and Training Objective Comparison">
+  <defs>
+    <filter id="shadow" x="-6%" y="-6%" width="114%" height="118%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0F172A" flood-opacity="0.08"/>
+    </filter>
+    <filter id="softShadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#0F172A" flood-opacity="0.06"/>
+    </filter>
+    <linearGradient id="gradNavy" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#162A4A"/>
+      <stop offset="100%" stop-color="#27477A"/>
+    </linearGradient>
+    <linearGradient id="gradIndigo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B5BDB"/>
+      <stop offset="100%" stop-color="#5C7CFA"/>
+    </linearGradient>
+    <linearGradient id="gradTeal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#099268"/>
+      <stop offset="100%" stop-color="#20C997"/>
+    </linearGradient>
+    <linearGradient id="gradViolet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6741D9"/>
+      <stop offset="100%" stop-color="#845EF7"/>
+    </linearGradient>
+    <linearGradient id="gradAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D9480F"/>
+      <stop offset="100%" stop-color="#F76707"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#475569"/>
+    </marker>
+    <marker id="arrowIndigo" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#3B5BDB"/>
+    </marker>
+    <marker id="arrowTeal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#0CA678"/>
+    </marker>
+    <marker id="arrowViolet" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#7048E8"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="445" fill="#FFFFFF" rx="6"/>
+
+
+    <rect x="14" y="14" width="470" height="416" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="249" y="38" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="13.2" font-weight="700">
+      (a) Ablation 1: Modality Impact (In-Domain vs. OOD)
+    </text>
+    
+<rect x="64" y="68" width="402" height="262" fill="#FFFFFF" stroke="#CBD5E1"/>
+<line x1="64" y1="330.0" x2="466" y2="330.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="57" y="333.5" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">40%</text>
+<line x1="64" y1="272.2" x2="466" y2="272.2" stroke="#E2E8F0" stroke-width="1"/>
+<text x="57" y="275.7" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">55%</text>
+<line x1="64" y1="214.4" x2="466" y2="214.4" stroke="#E2E8F0" stroke-width="1"/>
+<text x="57" y="217.9" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">70%</text>
+<line x1="64" y1="156.6" x2="466" y2="156.6" stroke="#E2E8F0" stroke-width="1"/>
+<text x="57" y="160.1" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">85%</text>
+<line x1="64" y1="98.8" x2="466" y2="98.8" stroke="#E2E8F0" stroke-width="1"/>
+<text x="57" y="102.3" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">100%</text>
+<text x="22" y="199.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="600" transform="rotate(-90 22 199.0)">Accuracy / Rank Corr. (×100)</text>
+<rect x="77.0" y="100.6" width="24" height="229.4" rx="3" fill="#162A4A"/>
+<line x1="89.0" y1="98.8" x2="89.0" y2="104.0" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="85.0" y1="98.8" x2="93.0" y2="98.8" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="85.0" y1="104.0" x2="93.0" y2="104.0" stroke="#0F172A" stroke-width="1.3"/>
+<text x="89.0" y="93.8" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">99.6</text>
+<rect x="105.0" y="102.2" width="24" height="227.8" rx="3" fill="#3B5BDB"/>
+<text x="117.0" y="97.2" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">99.1</text>
+<rect x="133.0" y="225.4" width="24" height="104.6" rx="3" fill="#0CA678"/>
+<line x1="145.0" y1="213.0" x2="145.0" y2="237.4" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="141.0" y1="213.0" x2="149.0" y2="213.0" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="141.0" y1="237.4" x2="149.0" y2="237.4" stroke="#0F172A" stroke-width="1.3"/>
+<text x="145.0" y="208.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">67.1</text>
+<rect x="161.0" y="213.4" width="24" height="116.6" rx="3" fill="#E67700"/>
+<text x="173.0" y="208.4" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">.70</text>
+<text x="131.0" y="346" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700">Static Only</text>
+<text x="131.0" y="359" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2">(12→64D)</text>
+<rect x="211.0" y="105.8" width="24" height="224.2" rx="3" fill="#162A4A"/>
+<line x1="223.0" y1="99.6" x2="223.0" y2="112.7" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="219.0" y1="99.6" x2="227.0" y2="99.6" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="219.0" y1="112.7" x2="227.0" y2="112.7" stroke="#0F172A" stroke-width="1.3"/>
+<text x="223.0" y="94.6" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">98.2</text>
+<rect x="239.0" y="112.3" width="24" height="217.7" rx="3" fill="#3B5BDB"/>
+<text x="251.0" y="107.3" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">96.5</text>
+<rect x="267.0" y="242.9" width="24" height="87.1" rx="3" fill="#0CA678"/>
+<line x1="279.0" y1="229.1" x2="279.0" y2="255.8" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="275.0" y1="229.1" x2="283.0" y2="229.1" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="275.0" y1="255.8" x2="283.0" y2="255.8" stroke="#0F172A" stroke-width="1.3"/>
+<text x="279.0" y="224.1" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">62.6</text>
+<rect x="295.0" y="303.9" width="24" height="26.1" rx="3" fill="#E67700"/>
+<text x="307.0" y="298.9" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">.47</text>
+<text x="265.0" y="346" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700">Code+DFG Only</text>
+<text x="265.0" y="359" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2">(768D)</text>
+<rect x="345.0" y="100.6" width="24" height="229.4" rx="3" fill="#162A4A"/>
+<line x1="357.0" y1="98.8" x2="357.0" y2="104.0" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="353.0" y1="98.8" x2="361.0" y2="98.8" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="353.0" y1="104.0" x2="361.0" y2="104.0" stroke="#0F172A" stroke-width="1.3"/>
+<text x="357.0" y="93.8" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">99.6</text>
+<rect x="373.0" y="102.2" width="24" height="227.8" rx="3" fill="#3B5BDB"/>
+<text x="385.0" y="97.2" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">99.1</text>
+<rect x="401.0" y="226.3" width="24" height="103.7" rx="3" fill="#0CA678"/>
+<line x1="413.0" y1="213.9" x2="413.0" y2="238.5" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="409.0" y1="213.9" x2="417.0" y2="213.9" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="409.0" y1="238.5" x2="417.0" y2="238.5" stroke="#0F172A" stroke-width="1.3"/>
+<text x="413.0" y="208.9" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">66.9</text>
+<rect x="429.0" y="213.7" width="24" height="116.3" rx="3" fill="#E67700"/>
+<text x="441.0" y="208.7" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">.70</text>
+<text x="399.0" y="346" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700">Full Fusion</text>
+<text x="399.0" y="359" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2">(832→256D)</text>
+<rect x="26" y="382" width="446" height="32" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+<rect x="32" y="393" width="10" height="10" rx="2" fill="#162A4A"/>
+<text x="46" y="401.5" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="600">CodeNet Acc</text>
+<rect x="142" y="393" width="10" height="10" rx="2" fill="#3B5BDB"/>
+<text x="156" y="401.5" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="600">CodeNet Len-Match</text>
+<rect x="252" y="393" width="10" height="10" rx="2" fill="#0CA678"/>
+<text x="266" y="401.5" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="600">SWE OOD Acc</text>
+<rect x="362" y="393" width="10" height="10" rx="2" fill="#E67700"/>
+<text x="376" y="401.5" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="600">SWE Spearman ρ</text>
+
+    <rect x="498" y="14" width="608" height="416" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="802" y="36" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="13.2" font-weight="700">
+      (b) Ablation 2: Training Objective Comparison (95% Bootstrap CIs)
+    </text>
+    <rect x="646" y="44" width="312" height="20" rx="10" fill="#087F5B"/>
+    <text x="802" y="57.5" text-anchor="middle" fill="#FFFFFF" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3" font-weight="700">
+      ★ Best Zero-Shot OOD Transfer: Pointwise MSE (85.8%, +18.75 pp)
+    </text>
+    
+<rect x="548" y="70" width="540" height="260" fill="#FFFFFF" stroke="#CBD5E1"/>
+<line x1="548" y1="330.0" x2="1088" y2="330.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="541" y="333.5" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">45%</text>
+<line x1="548" y1="288.7" x2="1088" y2="288.7" stroke="#E2E8F0" stroke-width="1"/>
+<text x="541" y="292.2" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">55%</text>
+<line x1="548" y1="247.5" x2="1088" y2="247.5" stroke="#E2E8F0" stroke-width="1"/>
+<text x="541" y="251.0" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">65%</text>
+<line x1="548" y1="206.2" x2="1088" y2="206.2" stroke="#E2E8F0" stroke-width="1"/>
+<text x="541" y="209.7" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">75%</text>
+<line x1="548" y1="164.9" x2="1088" y2="164.9" stroke="#E2E8F0" stroke-width="1"/>
+<text x="541" y="168.4" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">85%</text>
+<line x1="548" y1="123.7" x2="1088" y2="123.7" stroke="#E2E8F0" stroke-width="1"/>
+<text x="541" y="127.2" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">95%</text>
+<line x1="548" y1="103.0" x2="1088" y2="103.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="541" y="106.5" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">100%</text>
+<rect x="557.5" y="108.6" width="26" height="221.4" rx="3" fill="#162A4A"/>
+<line x1="570.5" y1="103.0" x2="570.5" y2="116.0" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="566.5" y1="103.0" x2="574.5" y2="103.0" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="566.5" y1="116.0" x2="574.5" y2="116.0" stroke="#0F172A" stroke-width="1.3"/>
+<text x="570.5" y="98.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">98.7</text>
+<rect x="587.5" y="110.2" width="26" height="219.8" rx="3" fill="#3B5BDB"/>
+<text x="600.5" y="105.2" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">98.2</text>
+<rect x="617.5" y="273.6" width="26" height="56.4" rx="3" fill="#0CA678"/>
+<line x1="630.5" y1="260.8" x2="630.5" y2="285.9" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="626.5" y1="260.8" x2="634.5" y2="260.8" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="626.5" y1="285.9" x2="634.5" y2="285.9" stroke="#0F172A" stroke-width="1.3"/>
+<text x="630.5" y="255.8" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">58.7</text>
+<rect x="647.5" y="280.9" width="26" height="49.1" rx="3" fill="#D9480F"/>
+<text x="660.5" y="275.9" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">56.9</text>
+<text x="615.5" y="346" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700">XGBoost</text>
+<text x="615.5" y="359" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2">(Delta Δm)</text>
+<rect x="688.5" y="73" width="124" height="254" rx="6" fill="#E6FCF5" fill-opacity="0.55" stroke="#0CA678" stroke-dasharray="4,2" stroke-width="1.2"/>
+<rect x="692.5" y="106.7" width="26" height="223.3" rx="3" fill="#162A4A"/>
+<line x1="705.5" y1="103.0" x2="705.5" y2="112.3" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="701.5" y1="103.0" x2="709.5" y2="103.0" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="701.5" y1="112.3" x2="709.5" y2="112.3" stroke="#0F172A" stroke-width="1.3"/>
+<text x="705.5" y="98.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">99.1</text>
+<rect x="722.5" y="110.2" width="26" height="219.8" rx="3" fill="#3B5BDB"/>
+<text x="735.5" y="105.2" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">98.2</text>
+<rect x="752.5" y="161.7" width="26" height="168.3" rx="3" fill="#0CA678"/>
+<line x1="765.5" y1="152.5" x2="765.5" y2="170.6" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="761.5" y1="152.5" x2="769.5" y2="152.5" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="761.5" y1="170.6" x2="769.5" y2="170.6" stroke="#0F172A" stroke-width="1.3"/>
+<text x="765.5" y="147.5" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">85.8</text>
+<rect x="782.5" y="193.9" width="26" height="136.1" rx="3" fill="#D9480F"/>
+<text x="795.5" y="188.9" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">78.0</text>
+<text x="750.5" y="346" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700">Pointwise MSE</text>
+<text x="750.5" y="359" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2">(Debt Reg.)</text>
+<rect x="827.5" y="104.9" width="26" height="225.1" rx="3" fill="#162A4A"/>
+<line x1="840.5" y1="103.0" x2="840.5" y2="108.6" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="836.5" y1="103.0" x2="844.5" y2="103.0" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="836.5" y1="108.6" x2="844.5" y2="108.6" stroke="#0F172A" stroke-width="1.3"/>
+<text x="840.5" y="98.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">99.6</text>
+<rect x="857.5" y="106.6" width="26" height="223.4" rx="3" fill="#3B5BDB"/>
+<text x="870.5" y="101.6" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">99.1</text>
+<rect x="887.5" y="239.1" width="26" height="90.9" rx="3" fill="#0CA678"/>
+<line x1="900.5" y1="225.8" x2="900.5" y2="251.4" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="896.5" y1="225.8" x2="904.5" y2="225.8" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="896.5" y1="251.4" x2="904.5" y2="251.4" stroke="#0F172A" stroke-width="1.3"/>
+<text x="900.5" y="220.8" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">67.0</text>
+<rect x="917.5" y="247.9" width="26" height="82.1" rx="3" fill="#D9480F"/>
+<text x="930.5" y="242.9" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">64.9</text>
+<text x="885.5" y="346" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700">Bradley-Terry</text>
+<text x="885.5" y="359" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2">(Siamese)</text>
+<rect x="962.5" y="112.3" width="26" height="217.7" rx="3" fill="#162A4A"/>
+<line x1="975.5" y1="104.9" x2="975.5" y2="119.7" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="971.5" y1="104.9" x2="979.5" y2="104.9" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="971.5" y1="119.7" x2="979.5" y2="119.7" stroke="#0F172A" stroke-width="1.3"/>
+<text x="975.5" y="99.9" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">97.8</text>
+<rect x="992.5" y="121.1" width="26" height="208.9" rx="3" fill="#3B5BDB"/>
+<text x="1005.5" y="116.1" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">95.6</text>
+<rect x="1022.5" y="243.5" width="26" height="86.5" rx="3" fill="#0CA678"/>
+<line x1="1035.5" y1="230.0" x2="1035.5" y2="258.1" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="1031.5" y1="230.0" x2="1039.5" y2="230.0" stroke="#0F172A" stroke-width="1.3"/>
+<line x1="1031.5" y1="258.1" x2="1039.5" y2="258.1" stroke="#0F172A" stroke-width="1.3"/>
+<text x="1035.5" y="225.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">66.0</text>
+<rect x="1052.5" y="239.9" width="26" height="90.1" rx="3" fill="#D9480F"/>
+<text x="1065.5" y="234.9" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">66.8</text>
+<text x="1020.5" y="346" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700">Dueling DQN</text>
+<text x="1020.5" y="359" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2">(Multi-Obj RL)</text>
+<rect x="520" y="382" width="568" height="32" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+<rect x="532" y="393" width="10" height="10" rx="2" fill="#162A4A"/>
+<text x="546" y="401.5" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="600">CodeNet ID Acc</text>
+<rect x="672" y="393" width="10" height="10" rx="2" fill="#3B5BDB"/>
+<text x="686" y="401.5" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="600">CodeNet Len-Match</text>
+<rect x="812" y="393" width="10" height="10" rx="2" fill="#0CA678"/>
+<text x="826" y="401.5" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="600">SWE-Refactor OOD Acc</text>
+<rect x="952" y="393" width="10" height="10" rx="2" fill="#D9480F"/>
+<text x="966" y="401.5" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="600">SWE OOD Len-Match</text>
+</svg>
+      <figcaption><strong>Fig. 3.</strong> Track A ablations with 95% bootstrap confidence intervals. (a) Static AST/DFG metrics anchor OOD rank correlation (&rho; = 0.70 vs. 0.47 for code-only embeddings). (b) Objective ablation exposes a clear domain-shift reversal: Bradley-Terry leads in-domain (99.55%), whereas continuous Pointwise MSE dominates zero-shot OOD transfer (85.78%, +18.75 pp over Bradley-Terry). Dueling Double-DQN (66.83%) surpasses Bradley-Terry (64.89%) on length-matched OOD refactorings.</figcaption>
+    </figure>
+  </div>
+
+  <p>Three empirical findings stand out: (1) <strong>Shortcut-Resistant Ranking:</strong> All Track A models achieve 97.75%&ndash;99.55% in-domain accuracy and 95.61%&ndash;99.12% on length-matched pairs. XGBoost feature importances (Fig. 4b) verify that <code>token_4gram_overlap</code> (35.37%), <code>cognitive_complexity</code> (20.76%), <code>halstead_volume</code> (14.19%), and <code>max_nesting_depth</code> (11.19%) govern splits while <code>sloc</code> accounts for only <strong>2.87%</strong>. (2) <strong>Static Anchor Under Shift:</strong> Removing static metrics drops OOD Spearman &rho; from 0.7019 to 0.4677. (3) <strong>Objective Generalization Reversal:</strong> Pointwise MSE outperforms Bradley-Terry by <strong>+18.75 pp</strong> and XGBoost by <strong>+27.12 pp</strong> zero-shot on SWE-Refactor.</p>
+
+  <div class="span-full">
+    <figure>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 420" width="1120" height="420" role="img" aria-label="Tree-Sitter Feature Extraction Latency CDF and XGBoost Feature Importance">
+  <defs>
+    <filter id="shadow" x="-6%" y="-6%" width="114%" height="118%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0F172A" flood-opacity="0.08"/>
+    </filter>
+    <filter id="softShadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#0F172A" flood-opacity="0.06"/>
+    </filter>
+    <linearGradient id="gradNavy" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#162A4A"/>
+      <stop offset="100%" stop-color="#27477A"/>
+    </linearGradient>
+    <linearGradient id="gradIndigo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B5BDB"/>
+      <stop offset="100%" stop-color="#5C7CFA"/>
+    </linearGradient>
+    <linearGradient id="gradTeal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#099268"/>
+      <stop offset="100%" stop-color="#20C997"/>
+    </linearGradient>
+    <linearGradient id="gradViolet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6741D9"/>
+      <stop offset="100%" stop-color="#845EF7"/>
+    </linearGradient>
+    <linearGradient id="gradAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D9480F"/>
+      <stop offset="100%" stop-color="#F76707"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#475569"/>
+    </marker>
+    <marker id="arrowIndigo" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#3B5BDB"/>
+    </marker>
+    <marker id="arrowTeal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#0CA678"/>
+    </marker>
+    <marker id="arrowViolet" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#7048E8"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="420" fill="#FFFFFF" rx="6"/>
+
+
+    <rect x="14" y="14" width="520" height="392" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="274" y="38" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="13.2" font-weight="700">
+      (a) Tree-Sitter 12-Metric Extraction Latency CDF (Log Scale)
+    </text>
+    
+<rect x="66" y="60" width="444" height="286" fill="#FFFFFF" stroke="#CBD5E1"/>
+<rect x="66" y="60" width="394.5" height="286" fill="#E6FCF5" fill-opacity="0.45"/>
+<line x1="460.5" y1="60" x2="460.5" y2="346" stroke="#D9480F" stroke-width="1.8" stroke-dasharray="5,3"/>
+<rect x="318.5" y="266" width="134" height="22" rx="4" fill="#FFFFFF" stroke="#D9480F" stroke-width="1"/>
+<text x="385.5" y="280.5" text-anchor="middle" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3" font-weight="700">RL-Loop SLA (&lt;50 ms)</text>
+<line x1="66" y1="346.0" x2="510" y2="346.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="59" y="349.5" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">0%</text>
+<line x1="66" y1="274.5" x2="510" y2="274.5" stroke="#E2E8F0" stroke-width="1"/>
+<text x="59" y="278.0" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">25%</text>
+<line x1="66" y1="203.0" x2="510" y2="203.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="59" y="206.5" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">50%</text>
+<line x1="66" y1="131.5" x2="510" y2="131.5" stroke="#E2E8F0" stroke-width="1"/>
+<text x="59" y="135.0" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">75%</text>
+<line x1="66" y1="74.3" x2="510" y2="74.3" stroke="#E2E8F0" stroke-width="1"/>
+<text x="59" y="77.8" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">95%</text>
+<line x1="66" y1="60.0" x2="510" y2="60.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="59" y="63.5" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">100%</text>
+<line x1="66.0" y1="60" x2="66.0" y2="346" stroke="#E2E8F0" stroke-width="0.8" stroke-dasharray="2,3"/>
+<text x="66.0" y="362" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">0.2</text>
+<line x1="131.5" y1="60" x2="131.5" y2="346" stroke="#E2E8F0" stroke-width="0.8" stroke-dasharray="2,3"/>
+<text x="131.5" y="362" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">0.5</text>
+<line x1="181.0" y1="60" x2="181.0" y2="346" stroke="#E2E8F0" stroke-width="0.8" stroke-dasharray="2,3"/>
+<text x="181.0" y="362" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">1</text>
+<line x1="230.5" y1="60" x2="230.5" y2="346" stroke="#E2E8F0" stroke-width="0.8" stroke-dasharray="2,3"/>
+<text x="230.5" y="362" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">2</text>
+<line x1="296.0" y1="60" x2="296.0" y2="346" stroke="#E2E8F0" stroke-width="0.8" stroke-dasharray="2,3"/>
+<text x="296.0" y="362" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">5</text>
+<line x1="345.5" y1="60" x2="345.5" y2="346" stroke="#E2E8F0" stroke-width="0.8" stroke-dasharray="2,3"/>
+<text x="345.5" y="362" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">10</text>
+<line x1="395.0" y1="60" x2="395.0" y2="346" stroke="#E2E8F0" stroke-width="0.8" stroke-dasharray="2,3"/>
+<text x="395.0" y="362" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">20</text>
+<line x1="460.5" y1="60" x2="460.5" y2="346" stroke="#E2E8F0" stroke-width="0.8" stroke-dasharray="2,3"/>
+<text x="460.5" y="362" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">50</text>
+<line x1="510.0" y1="60" x2="510.0" y2="346" stroke="#E2E8F0" stroke-width="0.8" stroke-dasharray="2,3"/>
+<text x="510.0" y="362" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">100</text>
+<text x="288.0" y="382" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="600">Extraction Latency per Java Patch (ms, log₁₀ scale)</text>
+<text x="24" y="203.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="600" transform="rotate(-90 24 203.0)">Empirical Cumulative Probability</text>
+<polygon points="66.0,346.0 66.0,346.0 115.5,341.5 144.5,330.7 165.0,304.1 181.0,271.6 210.0,192.7 230.5,156.8 259.5,120.9 296.0,103.4 329.6,92.5 358.5,85.8 395.0,83.6 435.0,80.6 460.5,72.0 479.2,64.5 510.0,62.3 510.0,346.0" fill="#3B5BDB" fill-opacity="0.12"/>
+<polyline points="66.0,346.0 115.5,341.5 144.5,330.7 165.0,304.1 181.0,271.6 210.0,192.7 230.5,156.8 259.5,120.9 296.0,103.4 329.6,92.5 358.5,85.8 395.0,83.6 435.0,80.6 460.5,72.0 479.2,64.5 510.0,62.3" fill="none" stroke="#3B5BDB" stroke-width="2.6" stroke-linejoin="round"/>
+
+    <circle cx="213.7" cy="203.0" r="5" fill="#0CA678" stroke="#FFFFFF" stroke-width="1.5"/>
+    <line x1="213.7" y1="203.0" x2="213.7" y2="346" stroke="#0CA678" stroke-width="1.2" stroke-dasharray="3,2"/>
+    <rect x="223.7" y="191.0" width="136" height="36" rx="5" fill="#FFFFFF" stroke="#0CA678" stroke-width="1.2"/>
+    <text x="291.7" y="207.0" text-anchor="middle" fill="#087F5B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="700">Median (p50): 1.58 ms</text>
+    <text x="291.7" y="221.0" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.8">Corpus Mean: 7.54 ms</text>
+
+    <circle cx="458.5" cy="74.3" r="4.5" fill="#D9480F" stroke="#FFFFFF" stroke-width="1.5"/>
+    <rect x="304.5" y="118.3" width="144" height="24" rx="5" fill="#FFF4E6" stroke="#D9480F" stroke-width="1.2"/>
+    <text x="376.5" y="133.8" text-anchor="middle" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3" font-weight="700">p95 = 48.64 ms (&lt; 50 ms ✓)</text>
+    <line x1="418.5" y1="118.3" x2="454.5" y2="79.3" stroke="#D9480F" stroke-width="1.2" stroke-dasharray="3,2"/>
+    
+
+    <rect x="548" y="14" width="558" height="392" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="827" y="38" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="13.2" font-weight="700">
+      (b) XGBoost Pairwise Feature Importance (Anti-Length-Shortcut Proof)
+    </text>
+    
+<rect x="720" y="58" width="368" height="302.0" fill="#FFFFFF" stroke="#CBD5E1"/>
+<line x1="720.0" y1="58" x2="720.0" y2="360.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="720.0" y="374.0" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9">0%</text>
+<line x1="804.0" y1="58" x2="804.0" y2="360.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="804.0" y="374.0" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9">10%</text>
+<line x1="888.0" y1="58" x2="888.0" y2="360.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="888.0" y="374.0" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9">20%</text>
+<line x1="972.0" y1="58" x2="972.0" y2="360.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="972.0" y="374.0" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9">30%</text>
+<line x1="1056.0" y1="58" x2="1056.0" y2="360.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="1056.0" y="374.0" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9">40%</text>
+<text x="712" y="77.5" text-anchor="end" fill="#0F172A" font-family="'Consolas', 'Courier New', monospace" font-size="9.5" font-weight="600">token_4gram_overlap</text>
+<rect x="720" y="67.0" width="297.1" height="15" rx="3" fill="#D9480F" fill-opacity="0.9"/>
+<text x="1023.1" y="78.0" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">35.37%</text>
+<text x="712" y="102.0" text-anchor="end" fill="#0F172A" font-family="'Consolas', 'Courier New', monospace" font-size="9.5" font-weight="600">cognitive_complexity</text>
+<rect x="720" y="91.5" width="174.4" height="15" rx="3" fill="#3B5BDB" fill-opacity="0.9"/>
+<text x="900.4" y="102.5" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">20.76%</text>
+<text x="712" y="126.5" text-anchor="end" fill="#0F172A" font-family="'Consolas', 'Courier New', monospace" font-size="9.5" font-weight="600">halstead_volume</text>
+<rect x="720" y="116.0" width="119.2" height="15" rx="3" fill="#D9480F" fill-opacity="0.9"/>
+<text x="845.2" y="127.0" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">14.19%</text>
+<text x="712" y="151.0" text-anchor="end" fill="#0F172A" font-family="'Consolas', 'Courier New', monospace" font-size="9.5" font-weight="600">max_nesting_depth</text>
+<rect x="720" y="140.5" width="94.0" height="15" rx="3" fill="#3B5BDB" fill-opacity="0.9"/>
+<text x="820.0" y="151.5" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">11.19%</text>
+<text x="712" y="175.5" text-anchor="end" fill="#0F172A" font-family="'Consolas', 'Courier New', monospace" font-size="9.5" font-weight="600">cyclomatic_complexity</text>
+<rect x="720" y="165.0" width="55.0" height="15" rx="3" fill="#3B5BDB" fill-opacity="0.9"/>
+<text x="781.0" y="176.0" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">6.55%</text>
+<text x="712" y="200.0" text-anchor="end" fill="#0F172A" font-family="'Consolas', 'Courier New', monospace" font-size="9.5" font-weight="600">ast_clone_ratio</text>
+<rect x="720" y="189.5" width="39.0" height="15" rx="3" fill="#D9480F" fill-opacity="0.9"/>
+<text x="765.0" y="200.5" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">4.64%</text>
+<text x="712" y="224.5" text-anchor="end" fill="#D9480F" font-family="'Consolas', 'Courier New', monospace" font-size="9.5" font-weight="700">sloc</text>
+<rect x="720" y="214.0" width="24.1" height="15" rx="3" fill="#0CA678" fill-opacity="0.9"/>
+<text x="750.1" y="225.0" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">2.87%  ← Only 2.9% weight!</text>
+<text x="712" y="249.0" text-anchor="end" fill="#0F172A" font-family="'Consolas', 'Courier New', monospace" font-size="9.5" font-weight="600">fan_out_calls</text>
+<rect x="720" y="238.5" width="10.5" height="15" rx="3" fill="#0CA678" fill-opacity="0.9"/>
+<text x="736.5" y="249.5" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">1.25%</text>
+<text x="712" y="273.5" text-anchor="end" fill="#0F172A" font-family="'Consolas', 'Courier New', monospace" font-size="9.5" font-weight="600">local_var_param_count</text>
+<rect x="720" y="263.0" width="8.5" height="15" rx="3" fill="#0CA678" fill-opacity="0.9"/>
+<text x="734.5" y="274.0" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">1.01%</text>
+<text x="712" y="298.0" text-anchor="end" fill="#0F172A" font-family="'Consolas', 'Courier New', monospace" font-size="9.5" font-weight="600">mean_live_var_span</text>
+<rect x="720" y="287.5" width="8.1" height="15" rx="3" fill="#0CA678" fill-opacity="0.9"/>
+<text x="734.1" y="298.5" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">0.97%</text>
+<text x="712" y="322.5" text-anchor="end" fill="#0F172A" font-family="'Consolas', 'Courier New', monospace" font-size="9.5" font-weight="600">max_ast_depth</text>
+<rect x="720" y="312.0" width="6.6" height="15" rx="3" fill="#3B5BDB" fill-opacity="0.9"/>
+<text x="732.6" y="323.0" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">0.78%</text>
+<text x="712" y="347.0" text-anchor="end" fill="#0F172A" font-family="'Consolas', 'Courier New', monospace" font-size="9.5" font-weight="600">dfg_edge_density</text>
+<rect x="720" y="336.5" width="3.6" height="15" rx="3" fill="#0CA678" fill-opacity="0.9"/>
+<text x="729.6" y="347.5" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">0.43%</text>
+
+    <rect x="572" y="378" width="510" height="22" rx="5" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <rect x="590" y="384" width="10" height="10" rx="2" fill="#D9480F"/>
+    <text x="605" y="392.5" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3" font-weight="600">Duplication &amp; Bloat (54.2%)</text>
+    <rect x="760" y="384" width="10" height="10" rx="2" fill="#3B5BDB"/>
+    <text x="775" y="392.5" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3" font-weight="600">Complexity (39.3%)</text>
+    <rect x="900" y="384" width="10" height="10" rx="2" fill="#0CA678"/>
+    <text x="915" y="392.5" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3" font-weight="600">Maintainability &amp; DFG (6.5%)</text>
+    
+</svg>
+      <figcaption><strong>Fig. 4.</strong> (a) Tree-Sitter 12-metric extraction latency CDF (log<sub>10</sub> scale): median <i>p</i><sub>50</sub> = 1.58 ms, mean = 7.54 ms, and <i>p</i><sub>95</sub> = 48.64 ms, satisfying the &lt;50 ms RL-loop SLA. (b) Ranked XGBoost feature importances prove duplication (54.2%) and complexity (39.3%) dominate decisions while <code>sloc</code> accounts for just 2.87%.</figcaption>
+    </figure>
+  </div>
+
+  <h3>B. RQ2: Dueling Double-DQN RL Convergence</h3>
+  <p>As shown in Fig. 2b, our Dueling Double-DQN agent climbs from Episode 1 (<i>R</i> = 35.94, 45.83% win rate) to 89.58% by Episode 12 and converges to peak reward <strong>162.07</strong> and <strong>97.92%</strong> clean-patch win rate (Episodes 44&ndash;45). On unseen CodeNet test pairs, it achieves 97.75% accuracy; remarkably, on the difficult <strong>length-matched OOD</strong> refactoring slice, Dueling Double-DQN (<strong>66.83%</strong>) outperforms both XGBoost (56.90%) and Bradley-Terry (64.89%), showing that explicit complexity and clone reward shaping mitigates length overfitting.</p>
+
+  <h3>C. RQ4: Track B Bidirectional CodeLLM Audit</h3>
+  <p>Table VI and Fig. 5 report Track B results across 222 CodeNet pairs (444 prompts/model) and 250 SWE-Refactor OOD pairs (500 prompts/model). Code-specialized <code>Qwen2.5-Coder-7B</code> leads across all four reasoning axes (89.68% ID / 83.91% OOD mean recall), ahead of <code>DeepSeek-Coder-6.7B</code> and general-purpose <code>Meta-Llama-3-8B</code>. Yet bidirectional swap testing exposes severe OOD position bias (<strong>26.80%&ndash;37.60% PBR</strong>), collapsing single-order OOD accuracy (75.6%&ndash;80.8%) down to <strong>55.6%&ndash;65.2%</strong> strict order-invariant accuracy (Acc<sub>strict</sub>).</p>
+
+  <div class="span-full">
+    <table>
+      <caption>Table VI. Track B Bidirectional Blind Audit &mdash; Accuracy, Swap Consistency, Position Bias (PBR), &amp; 4-Axis Recall</caption>
+      <thead>
+        <tr><th>Model Family</th><th>Split</th><th>Acc<sub>pref</sub></th><th>Acc<sub>strict</sub></th><th>PBR (&darr;)</th><th>SRCR</th><th>Maint.</th><th>Compl.</th><th>Dup.</th><th>Impact</th><th>Mean 4-Ax</th></tr>
+      </thead>
+      <tbody>
+        <tr class="hl-row"><td>Qwen2.5-Coder-7B</td><td>CodeNet Test</td><td>94.59%</td><td>90.09%</td><td>8.11%</td><td>97.75%</td><td>97.09%</td><td>88.76%</td><td>89.86%</td><td>83.00%</td><td>89.68%</td></tr>
+        <tr class="hl-row"><td>Qwen2.5-Coder-7B</td><td>SWE OOD</td><td>80.80%</td><td>65.20%</td><td>26.80%</td><td>100.0%</td><td>94.81%</td><td>92.47%</td><td>73.95%</td><td>74.40%</td><td>83.91%</td></tr>
+        <tr><td>DeepSeek-Coder-6.7B</td><td>CodeNet Test</td><td>92.79%</td><td>89.19%</td><td>8.56%</td><td>99.55%</td><td>97.09%</td><td>81.66%</td><td>89.86%</td><td>76.50%</td><td>86.28%</td></tr>
+        <tr><td>DeepSeek-Coder-6.7B</td><td>SWE OOD</td><td>79.20%</td><td>62.40%</td><td>32.40%</td><td>97.20%</td><td>92.59%</td><td>82.80%</td><td>70.59%</td><td>73.81%</td><td>79.95%</td></tr>
+        <tr><td>Meta-Llama-3-8B</td><td>CodeNet Test</td><td>90.54%</td><td>81.53%</td><td>16.22%</td><td>96.85%</td><td>95.35%</td><td>76.33%</td><td>75.12%</td><td>65.50%</td><td>78.08%</td></tr>
+        <tr><td>Meta-Llama-3-8B</td><td>SWE OOD</td><td>75.60%</td><td>55.60%</td><td>37.60%</td><td>95.20%</td><td>88.15%</td><td>76.34%</td><td>61.34%</td><td>64.88%</td><td>72.68%</td></tr>
+      </tbody>
+    </table>
+
+    <figure>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 440" width="1120" height="440" role="img" aria-label="Track B CodeLLM 4-Axis Engineering Recall Radar and Position Bias Gap">
+  <defs>
+    <filter id="shadow" x="-6%" y="-6%" width="114%" height="118%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0F172A" flood-opacity="0.08"/>
+    </filter>
+    <filter id="softShadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#0F172A" flood-opacity="0.06"/>
+    </filter>
+    <linearGradient id="gradNavy" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#162A4A"/>
+      <stop offset="100%" stop-color="#27477A"/>
+    </linearGradient>
+    <linearGradient id="gradIndigo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B5BDB"/>
+      <stop offset="100%" stop-color="#5C7CFA"/>
+    </linearGradient>
+    <linearGradient id="gradTeal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#099268"/>
+      <stop offset="100%" stop-color="#20C997"/>
+    </linearGradient>
+    <linearGradient id="gradViolet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6741D9"/>
+      <stop offset="100%" stop-color="#845EF7"/>
+    </linearGradient>
+    <linearGradient id="gradAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D9480F"/>
+      <stop offset="100%" stop-color="#F76707"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#475569"/>
+    </marker>
+    <marker id="arrowIndigo" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#3B5BDB"/>
+    </marker>
+    <marker id="arrowTeal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#0CA678"/>
+    </marker>
+    <marker id="arrowViolet" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#7048E8"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="440" fill="#FFFFFF" rx="6"/>
+
+
+    <rect x="14" y="14" width="515" height="412" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="271.5" y="38" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="13.2" font-weight="700">
+      (a) 4-Axis Engineering Rubric Recall (SWE-Refactor OOD)
+    </text>
+    
+<polygon points="272.0,92.0 386.0,206.0 272.0,320.0 158.0,206.0" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.3" stroke-dasharray=""/>
+<text x="277" y="103.0" fill="#64748B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.2">100%</text>
+<polygon points="272.0,111.4 366.6,206.0 272.0,300.6 177.4,206.0" fill="none" stroke="#CBD5E1" stroke-width="0.9" stroke-dasharray="3,2"/>
+<text x="277" y="122.4" fill="#64748B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.2">90%</text>
+<polygon points="272.0,130.8 347.2,206.0 272.0,281.2 196.8,206.0" fill="none" stroke="#CBD5E1" stroke-width="0.9" stroke-dasharray="3,2"/>
+<text x="277" y="141.8" fill="#64748B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.2">80%</text>
+<polygon points="272.0,150.1 327.9,206.0 272.0,261.9 216.1,206.0" fill="none" stroke="#CBD5E1" stroke-width="0.9" stroke-dasharray="3,2"/>
+<text x="277" y="161.1" fill="#64748B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.2">70%</text>
+<polygon points="272.0,169.5 308.5,206.0 272.0,242.5 235.5,206.0" fill="none" stroke="#CBD5E1" stroke-width="0.9" stroke-dasharray="3,2"/>
+<text x="277" y="180.5" fill="#64748B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.2">60%</text>
+<line x1="272" y1="206" x2="272.0" y2="92.0" stroke="#CBD5E1" stroke-width="1"/>
+<text x="272.0" y="62.0" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">Maintainability</text>
+<text x="272.0" y="75.0" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">Reasoning</text>
+<line x1="272" y1="206" x2="386.0" y2="206.0" stroke="#CBD5E1" stroke-width="1"/>
+<text x="400.0" y="206.0" text-anchor="start" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">Complexity</text>
+<text x="400.0" y="219.0" text-anchor="start" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">Awareness</text>
+<line x1="272" y1="206" x2="272.0" y2="320.0" stroke="#CBD5E1" stroke-width="1"/>
+<text x="272.0" y="344.0" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">Future Change</text>
+<text x="272.0" y="357.0" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">Impact (DFG)</text>
+<line x1="272" y1="206" x2="158.0" y2="206.0" stroke="#CBD5E1" stroke-width="1"/>
+<text x="144.0" y="206.0" text-anchor="end" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">Duplication</text>
+<text x="144.0" y="219.0" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5">Detection</text>
+<polygon points="272.0,102.1 371.4,206.0 272.0,270.4 208.5,206.0" fill="#0CA678" fill-opacity="0.14" stroke="#0CA678" stroke-width="2.4"/>
+<circle cx="272.0" cy="102.1" r="3.6" fill="#0CA678" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="371.4" cy="206.0" r="3.6" fill="#0CA678" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="272.0" cy="270.4" r="3.6" fill="#0CA678" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="208.5" cy="206.0" r="3.6" fill="#0CA678" stroke="#FFFFFF" stroke-width="1.2"/>
+<polygon points="272.0,106.4 352.7,206.0 272.0,269.2 215.0,206.0" fill="#3B5BDB" fill-opacity="0.14" stroke="#3B5BDB" stroke-width="2.4"/>
+<circle cx="272.0" cy="106.4" r="3.6" fill="#3B5BDB" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="352.7" cy="206.0" r="3.6" fill="#3B5BDB" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="272.0" cy="269.2" r="3.6" fill="#3B5BDB" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="215.0" cy="206.0" r="3.6" fill="#3B5BDB" stroke="#FFFFFF" stroke-width="1.2"/>
+<polygon points="272.0,115.0 340.1,206.0 272.0,251.9 232.9,206.0" fill="#D9480F" fill-opacity="0.14" stroke="#D9480F" stroke-width="2.4"/>
+<circle cx="272.0" cy="115.0" r="3.6" fill="#D9480F" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="340.1" cy="206.0" r="3.6" fill="#D9480F" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="272.0" cy="251.9" r="3.6" fill="#D9480F" stroke="#FFFFFF" stroke-width="1.2"/>
+<circle cx="232.9" cy="206.0" r="3.6" fill="#D9480F" stroke="#FFFFFF" stroke-width="1.2"/>
+<rect x="34" y="382" width="475" height="32" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+<rect x="48" y="393" width="11" height="11" rx="2" fill="#0CA678"/>
+<text x="64" y="402" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.4" font-weight="700">Qwen2.5-Coder-7B</text>
+<rect x="204" y="393" width="11" height="11" rx="2" fill="#3B5BDB"/>
+<text x="220" y="402" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.4" font-weight="700">DeepSeek-Coder-6.7B</text>
+<rect x="360" y="393" width="11" height="11" rx="2" fill="#D9480F"/>
+<text x="376" y="402" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.4" font-weight="700">Meta-Llama-3-8B</text>
+
+    <rect x="542" y="14" width="564" height="412" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="824" y="38" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="13.2" font-weight="700">
+      (b) Bidirectional Swap Audit: Accuracy Collapse &amp; Position Bias Rate
+    </text>
+    
+<rect x="594" y="78" width="492" height="248" fill="#FFFFFF" stroke="#CBD5E1"/>
+<line x1="594" y1="326.0" x2="1086" y2="326.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="587" y="329.5" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">0%</text>
+<line x1="594" y1="279.2" x2="1086" y2="279.2" stroke="#E2E8F0" stroke-width="1"/>
+<text x="587" y="282.7" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">20%</text>
+<line x1="594" y1="232.4" x2="1086" y2="232.4" stroke="#E2E8F0" stroke-width="1"/>
+<text x="587" y="235.9" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">40%</text>
+<line x1="594" y1="185.6" x2="1086" y2="185.6" stroke="#E2E8F0" stroke-width="1"/>
+<text x="587" y="189.1" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">60%</text>
+<line x1="594" y1="138.8" x2="1086" y2="138.8" stroke="#E2E8F0" stroke-width="1"/>
+<text x="587" y="142.3" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">80%</text>
+<line x1="594" y1="92.0" x2="1086" y2="92.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="587" y="95.5" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">100%</text>
+<text x="556" y="202.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.3" font-weight="600" transform="rotate(-90 556 202.0)">Percentage (%)</text>
+<line x1="840.0" y1="78" x2="840.0" y2="326" stroke="#94A3B8" stroke-width="1.3" stroke-dasharray="4,3"/>
+<rect x="620.0" y="52" width="194" height="20" rx="5" fill="#EDF2FF" stroke="#3B5BDB" stroke-width="0.9"/>
+<text x="717.0" y="65.5" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="700">In-Domain: CodeNet Test (n=222)</text>
+<rect x="866.0" y="52" width="194" height="20" rx="5" fill="#FFF4E6" stroke="#D9480F" stroke-width="0.9"/>
+<text x="963.0" y="65.5" text-anchor="middle" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="700">OOD: SWE-Refactor Subtle (n=250)</text>
+<rect x="603.5" y="104.7" width="19" height="221.3" rx="2.5" fill="#3B5BDB"/>
+<text x="613.0" y="100.7" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">94.6</text>
+<rect x="625.5" y="115.2" width="19" height="210.8" rx="2.5" fill="#0CA678"/>
+<text x="635.0" y="111.2" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">90.1</text>
+<rect x="647.5" y="307.0" width="19" height="19.0" rx="2.5" fill="#D9480F"/>
+<text x="657.0" y="303.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">8.1</text>
+<text x="635.0" y="341" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">Qwen2.5</text>
+<text x="635.0" y="353" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4">(CodeNet)</text>
+<rect x="685.5" y="108.9" width="19" height="217.1" rx="2.5" fill="#3B5BDB"/>
+<text x="695.0" y="104.9" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">92.8</text>
+<rect x="707.5" y="117.3" width="19" height="208.7" rx="2.5" fill="#0CA678"/>
+<text x="717.0" y="113.3" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">89.2</text>
+<rect x="729.5" y="306.0" width="19" height="20.0" rx="2.5" fill="#D9480F"/>
+<text x="739.0" y="302.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">8.6</text>
+<text x="717.0" y="341" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">DeepSeek</text>
+<text x="717.0" y="353" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4">(CodeNet)</text>
+<rect x="767.5" y="114.2" width="19" height="211.8" rx="2.5" fill="#3B5BDB"/>
+<text x="777.0" y="110.2" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">90.5</text>
+<rect x="789.5" y="135.3" width="19" height="190.7" rx="2.5" fill="#0CA678"/>
+<text x="799.0" y="131.3" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">81.5</text>
+<rect x="811.5" y="288.1" width="19" height="37.9" rx="2.5" fill="#D9480F"/>
+<text x="821.0" y="284.1" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">16.2</text>
+<text x="799.0" y="341" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">Llama-3</text>
+<text x="799.0" y="353" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4">(CodeNet)</text>
+<rect x="849.5" y="137.0" width="19" height="189.0" rx="2.5" fill="#3B5BDB"/>
+<text x="859.0" y="133.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">80.8</text>
+<rect x="871.5" y="173.5" width="19" height="152.5" rx="2.5" fill="#0CA678"/>
+<text x="881.0" y="169.5" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">65.2</text>
+<rect x="893.5" y="263.3" width="19" height="62.7" rx="2.5" fill="#D9480F"/>
+<text x="903.0" y="259.3" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">26.8</text>
+<text x="881.0" y="341" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">Qwen2.5</text>
+<text x="881.0" y="353" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4">(SWE OOD)</text>
+<rect x="931.5" y="140.7" width="19" height="185.3" rx="2.5" fill="#3B5BDB"/>
+<text x="941.0" y="136.7" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">79.2</text>
+<rect x="953.5" y="180.0" width="19" height="146.0" rx="2.5" fill="#0CA678"/>
+<text x="963.0" y="176.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">62.4</text>
+<rect x="975.5" y="250.2" width="19" height="75.8" rx="2.5" fill="#D9480F"/>
+<text x="985.0" y="246.2" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">32.4</text>
+<text x="963.0" y="341" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">DeepSeek</text>
+<text x="963.0" y="353" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4">(SWE OOD)</text>
+<rect x="1013.5" y="149.1" width="19" height="176.9" rx="2.5" fill="#3B5BDB"/>
+<text x="1023.0" y="145.1" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">75.6</text>
+<rect x="1035.5" y="195.9" width="19" height="130.1" rx="2.5" fill="#0CA678"/>
+<text x="1045.0" y="191.9" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">55.6</text>
+<rect x="1057.5" y="238.0" width="19" height="88.0" rx="2.5" fill="#D9480F"/>
+<text x="1067.0" y="234.0" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="7.9" font-weight="700">37.6</text>
+<text x="1045.0" y="341" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.2" font-weight="700">Llama-3</text>
+<text x="1045.0" y="353" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4">(SWE OOD)</text>
+
+    <rect x="562" y="382" width="526" height="32" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <rect x="576" y="393" width="11" height="11" rx="2" fill="#3B5BDB"/>
+    <text x="592" y="402" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3" font-weight="600">Single-Order Acc_pref</text>
+    <rect x="728" y="393" width="11" height="11" rx="2" fill="#0CA678"/>
+    <text x="744" y="402" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3" font-weight="600">Swap-Consistent Acc_strict</text>
+    <rect x="902" y="393" width="11" height="11" rx="2" fill="#D9480F"/>
+    <text x="918" y="402" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3" font-weight="700">Position Bias Rate (PBR)</text>
+    
+</svg>
+      <figcaption><strong>Fig. 5.</strong> Track B generative audit modeled on <em>CodeJudgeBench</em>. (a) 4-Axis rubric recall radar on SWE-Refactor OOD highlights a 15%&ndash;20% drop on global DFG (<em>Future Change Impact</em>) and clone (<em>Duplication Detection</em>) axes vs. local visual axes. (b) Bidirectional swap auditing exposes accuracy collapse from single-order Acc<sub>pref</sub> (75.6%&ndash;80.8%) to swap-consistent Acc<sub>strict</sub> (55.6%&ndash;65.2%) under 26.8%&ndash;37.6% Position Bias Rates.</figcaption>
+    </figure>
+  </div>
+
+  <h2>VI. Deep-Dive Analysis &amp; Discussion</h2>
+  <h3>A. The &ldquo;Extract Method Paradox&rdquo;</h3>
+  <p>In initial experiments using raw file-level static sums, zero-shot OOD accuracy stalled at 65.47%. Auditing the 837 SWE-Refactor commits (Fig. 6a) revealed that <strong>Extract Method</strong> accounts for 45.5% (381/837) of real refactorings. Across these 381 commits, adding a private helper signature and call site caused raw file-level SLOC to stay equal or <em>increase</em> in <strong>82.9% of commits</strong> (mean raw SLOC: 40.35 &rarr; 38.78, &minus;3.9%), tricking file-level models into penalizing modularization. Applying per-method normalization (&divide;<i>M</i>) and filtering internal helper calls revealed sharp reductions across every structural dimension (Fig. 6b): per-method SLOC <strong>&minus;52.6%</strong> (25.67 &rarr; 12.16), cognitive complexity <strong>&minus;68.8%</strong> (7.91 &rarr; 2.47), Halstead volume <strong>&minus;55.2%</strong> (868.6 &rarr; 389.2), and external fan-out <strong>&minus;56.8%</strong> (16.28 &rarr; 7.03), lifting zero-shot OOD accuracy by <strong>+20.31 pp</strong> to <strong>85.78%</strong>.</p>
+
+  <div class="span-full">
+    <figure>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 420" width="1120" height="420" role="img" aria-label="SWE-Refactor Taxonomy and The Extract Method Normalization Paradox">
+  <defs>
+    <filter id="shadow" x="-6%" y="-6%" width="114%" height="118%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0F172A" flood-opacity="0.08"/>
+    </filter>
+    <filter id="softShadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#0F172A" flood-opacity="0.06"/>
+    </filter>
+    <linearGradient id="gradNavy" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#162A4A"/>
+      <stop offset="100%" stop-color="#27477A"/>
+    </linearGradient>
+    <linearGradient id="gradIndigo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B5BDB"/>
+      <stop offset="100%" stop-color="#5C7CFA"/>
+    </linearGradient>
+    <linearGradient id="gradTeal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#099268"/>
+      <stop offset="100%" stop-color="#20C997"/>
+    </linearGradient>
+    <linearGradient id="gradViolet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6741D9"/>
+      <stop offset="100%" stop-color="#845EF7"/>
+    </linearGradient>
+    <linearGradient id="gradAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D9480F"/>
+      <stop offset="100%" stop-color="#F76707"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#475569"/>
+    </marker>
+    <marker id="arrowIndigo" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#3B5BDB"/>
+    </marker>
+    <marker id="arrowTeal" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#0CA678"/>
+    </marker>
+    <marker id="arrowViolet" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#7048E8"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="420" fill="#FFFFFF" rx="6"/>
+
+
+    <rect x="14" y="14" width="500" height="392" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="264" y="38" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="13.2" font-weight="700">
+      (a) SWE-Refactor OOD Corpus Composition (837 Pairs, 18 Repos)
+    </text>
+    
+<rect x="190" y="60" width="314" height="274" fill="#FFFFFF" stroke="#CBD5E1"/>
+<text x="180" y="88" text-anchor="end" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700">Extract Method</text>
+<rect x="190" y="74" width="213.4" height="22" rx="4" fill="#0CA678"/>
+<text x="410.4" y="84" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="700">381 (45.5%)</text>
+<text x="410.4" y="95" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.5">ΔTDI = +52.0m</text>
+<text x="180" y="132" text-anchor="end" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700">Move Method</text>
+<rect x="190" y="118" width="173.6" height="22" rx="4" fill="#3B5BDB"/>
+<text x="370.6" y="128" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="700">310 (37.0%)</text>
+<text x="370.6" y="139" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.5">ΔTDI = +70.8m</text>
+<text x="180" y="176" text-anchor="end" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700">Extract And Move Method</text>
+<rect x="190" y="162" width="44.2" height="22" rx="4" fill="#1C7ED6"/>
+<text x="241.2" y="172" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="700">79 (9.4%)</text>
+<text x="241.2" y="183" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.5">ΔTDI = +17.4m</text>
+<text x="180" y="220" text-anchor="end" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700">Inline Method</text>
+<rect x="190" y="206" width="28.6" height="22" rx="4" fill="#7048E8"/>
+<text x="225.6" y="216" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="700">51 (6.1%)</text>
+<text x="225.6" y="227" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.5">ΔTDI = +36.0m</text>
+<text x="180" y="264" text-anchor="end" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700">Move And Rename Method</text>
+<rect x="190" y="250" width="7.8" height="22" rx="4" fill="#E67700"/>
+<text x="204.8" y="260" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="700">14 (1.7%)</text>
+<text x="204.8" y="271" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.5">ΔTDI = +56.9m</text>
+<text x="180" y="308" text-anchor="end" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700">Move And Inline Method</text>
+<rect x="190" y="294" width="6.0" height="22" rx="4" fill="#475569"/>
+<text x="203.0" y="304" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="700">2 (0.2%)</text>
+<text x="203.0" y="315" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.5">ΔTDI = +5.1m</text>
+
+    <rect x="28" y="348" width="472" height="46" rx="6" fill="#EDF2FF" stroke="#3B5BDB" stroke-width="1.1"/>
+    <text x="264" y="367" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">
+      Extract Method Accounts for 45.5% (381/837) of OOD Developer Commits
+    </text>
+    <text x="264" y="383" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.3">
+      82.9% of Extract Method commits keep or INCREASE raw file SLOC due to helper signatures!
+    </text>
+    
+
+    <rect x="528" y="14" width="578" height="392" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="817" y="36" text-anchor="middle" fill="#162A4A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="13.2" font-weight="700">
+      (b) The Extract Method Paradox: Raw File vs. Per-Method Normalization
+    </text>
+    <rect x="615" y="44" width="404" height="19" rx="5" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <rect x="626" y="49" width="9" height="9" rx="2" fill="#94A3B8"/>
+    <text x="639" y="57" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.8" font-weight="600">Before Refactoring (100%)</text>
+    <rect x="765" y="49" width="9" height="9" rx="2" fill="#D9480F"/>
+    <text x="778" y="57" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.8" font-weight="600">After (Naive File Sum)</text>
+    <rect x="890" y="49" width="9" height="9" rx="2" fill="#0CA678"/>
+    <text x="903" y="57" fill="#087F5B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.8" font-weight="600">After (Method-Norm.)</text>
+    
+<rect x="570" y="70" width="514" height="208" fill="#FFFFFF" stroke="#CBD5E1"/>
+<line x1="570" y1="278.0" x2="1084" y2="278.0" stroke="#E2E8F0" stroke-width="1"/>
+<text x="564" y="281.5" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9">0%</text>
+<line x1="570" y1="232.8" x2="1084" y2="232.8" stroke="#E2E8F0" stroke-width="1"/>
+<text x="564" y="236.3" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9">25%</text>
+<line x1="570" y1="187.6" x2="1084" y2="187.6" stroke="#E2E8F0" stroke-width="1"/>
+<text x="564" y="191.1" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9">50%</text>
+<line x1="570" y1="142.3" x2="1084" y2="142.3" stroke="#E2E8F0" stroke-width="1"/>
+<text x="564" y="145.8" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9">75%</text>
+<line x1="570" y1="97.1" x2="1084" y2="97.1" stroke="#E2E8F0" stroke-width="1"/>
+<text x="564" y="100.6" text-anchor="end" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9">100%</text>
+<rect x="577.4" y="74" width="88" height="200" rx="5" fill="#FFF5F5" stroke="#FFA8A8" stroke-dasharray="3,2"/>
+<rect x="590.4" y="97.1" width="28" height="180.9" rx="3" fill="#94A3B8"/>
+<text x="604.4" y="93.1" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">40.4</text>
+<rect x="624.4" y="104.2" width="28" height="173.8" rx="3" fill="#D9480F"/>
+<text x="638.4" y="100.2" text-anchor="middle" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">38.8</text>
+<text x="621.4" y="86" text-anchor="middle" fill="#D9480F" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.8" font-weight="700">-3.9%</text>
+<text x="621.4" y="293" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.1" font-weight="700">Raw File SLOC</text>
+<text x="621.4" y="305" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.5">(Naive Sum)</text>
+<rect x="693.2" y="97.1" width="28" height="180.9" rx="3" fill="#94A3B8"/>
+<text x="707.2" y="93.1" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">25.7</text>
+<rect x="727.2" y="192.3" width="28" height="85.7" rx="3" fill="#0CA678"/>
+<text x="741.2" y="188.3" text-anchor="middle" fill="#0CA678" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">12.2</text>
+<text x="724.2" y="86" text-anchor="middle" fill="#0CA678" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.8" font-weight="700">-52.6%</text>
+<text x="724.2" y="293" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.1" font-weight="700">Per-Method SLOC</text>
+<text x="724.2" y="305" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.5">(÷ M Methods)</text>
+<rect x="796.0" y="97.1" width="28" height="180.9" rx="3" fill="#94A3B8"/>
+<text x="810.0" y="93.1" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">7.9</text>
+<rect x="830.0" y="221.5" width="28" height="56.5" rx="3" fill="#0CA678"/>
+<text x="844.0" y="217.5" text-anchor="middle" fill="#0CA678" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">2.5</text>
+<text x="827.0" y="86" text-anchor="middle" fill="#0CA678" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.8" font-weight="700">-68.8%</text>
+<text x="827.0" y="293" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.1" font-weight="700">Per-Method</text>
+<text x="827.0" y="305" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.5">Cognitive Compl.</text>
+<rect x="898.8" y="97.1" width="28" height="180.9" rx="3" fill="#94A3B8"/>
+<text x="912.8" y="93.1" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">868.6</text>
+<rect x="932.8" y="197.0" width="28" height="81.0" rx="3" fill="#0CA678"/>
+<text x="946.8" y="193.0" text-anchor="middle" fill="#0CA678" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">389.2</text>
+<text x="929.8" y="86" text-anchor="middle" fill="#0CA678" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.8" font-weight="700">-55.2%</text>
+<text x="929.8" y="293" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.1" font-weight="700">Per-Method</text>
+<text x="929.8" y="305" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.5">Halstead Vol.</text>
+<rect x="1001.6" y="97.1" width="28" height="180.9" rx="3" fill="#94A3B8"/>
+<text x="1015.6" y="93.1" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">16.3</text>
+<rect x="1035.6" y="199.9" width="28" height="78.1" rx="3" fill="#0CA678"/>
+<text x="1049.6" y="195.9" text-anchor="middle" fill="#0CA678" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.4" font-weight="700">7.0</text>
+<text x="1032.6" y="86" text-anchor="middle" fill="#0CA678" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.8" font-weight="700">-56.8%</text>
+<text x="1032.6" y="293" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.1" font-weight="700">Per-Method</text>
+<text x="1032.6" y="305" text-anchor="middle" fill="#475569" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="8.5">Ext. Fan-Out</text>
+
+    <rect x="548" y="320" width="538" height="74" rx="8" fill="#162A4A"/>
+    <text x="817" y="341" text-anchor="middle" fill="#63E6BE" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.2" font-weight="700">
+      Impact of Method-Level Normalization on Zero-Shot SWE-Refactor OOD Accuracy
+    </text>
+    <rect x="574" y="352" width="188" height="30" rx="5" fill="#C92A2A" fill-opacity="0.85"/>
+    <text x="668" y="371" text-anchor="middle" fill="#FFFFFF" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">Naive File Sum: 65.47%</text>
+
+    <line x1="766" y1="367" x2="824" y2="367" stroke="#63E6BE" stroke-width="2.4" marker-end="url(#arrowTeal)"/>
+    <text x="795" y="361" text-anchor="middle" fill="#FFD43B" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="700">+20.31 pp</text>
+
+    <rect x="830" y="352" width="232" height="30" rx="5" fill="#0CA678"/>
+    <text x="946" y="371" text-anchor="middle" fill="#FFFFFF" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10.2" font-weight="700">Method-Normalized: 85.78% (ρ=0.84)</text>
+    
+</svg>
+      <figcaption><strong>Fig. 6.</strong> (a) Refactoring taxonomy across all 837 verified SWE-Refactor OOD pairs (18 Java repositories). (b) Empirical proof of the <em>Extract Method Paradox</em> (<i>n</i> = 381): raw file SLOC fails to capture modularization (82.9% non-decreasing), whereas per-method normalization exposes &minus;52.6% to &minus;68.8% debt drops and lifts zero-shot OOD accuracy from 65.47% to 85.78% (+20.31 pp).</figcaption>
+    </figure>
+  </div>
+
+  <h3>B. Why Continuous Pointwise Grounding Beats Binary Preference Under Domain Shift</h3>
+  <p>Binary pairwise objectives (Bradley-Terry, &Delta;<strong>m</strong> trees) are invariant to monotonic rescaling and saturate on whichever cues yield the largest source-domain margin&mdash;namely 4-gram duplication (+0.181) and Halstead bloat (+388.0) in CodeNet. Under domain shift to SWE-Refactor, duplication deltas shrink 13&times; (+0.014) while external coupling (+4.216) dominates (Table II). Regressing onto continuous log-remediation debt <i>y</i>(<i>x</i>) = &minus;log(1 + TDI<sub>SQ</sub>(<i>x</i>)) forces calibrated sensitivity across <em>all</em> maintainability axes, explaining Pointwise MSE&rsquo;s +18.75 pp OOD advantage and offering an immediate architectural recipe for online <strong>Reinforcement Learning from Execution &amp; Maintainability Feedback (RLEMF)</strong> critics.</p>
+
+  <h2>VII. Threats to Validity</h2>
+  <ul>
+    <li><strong>Construct Validity &amp; Reproducibility Transparency:</strong> TDI<sub>SQ</sub> proxies SonarJava rules rather than human review logs; we mitigate this via OOD validation on real developer refactorings (SWE-Refactor). Additionally, to ensure deterministic CPU reproducibility, Phase 4 runs utilize our cached 768-D AST+DFG structural encoder and Track B&rsquo;s calibrated AST-grounded offline rubric evaluator; live HuggingFace <code>GraphCodeBERT</code> and Ollama/vLLM adapters are implemented and tested in the repository for GPU-cluster benchmarking.</li>
+    <li><strong>Internal Validity:</strong> Comment and length confounders are eliminated via AST byte-span comment stripping and our 1,178-pair length-matched slice (|&Delta;SLOC| &le; 15%).</li>
+    <li><strong>External Validity:</strong> Evaluation targets Java across algorithmic and 18 enterprise OSS repositories; <code>tree-sitter</code>&rsquo;s multi-language grammar bindings allow direct extension to Python, C++, TypeScript, and Rust.</li>
+  </ul>
+
+  <h2>VIII. Conclusion &amp; Future Work</h2>
+  <p>Passing 100% of unit tests conceals an average of +66.20 minutes of SQALE technical debt per pair across 2,341 verified Java patch pairs. Coupling a 1.58 ms method-normalized <code>tree-sitter-java</code> engine with multimodal fusion and Multi-Objective Dueling Double-DQN yields 99.55% in-domain accuracy (Bradley-Terry), 97.75% test accuracy / 97.92% training win rate (Dueling Double-DQN), and 85.78% zero-shot OOD accuracy (&rho; = 0.8407, Pointwise MSE) on real developer refactorings, while resolving the <em>Extract Method Paradox</em> (+20.31 pp) and quantifying 26.8%&ndash;37.6% OOD position bias in CodeLLM judges. Future work will embed our sub-10 ms hybrid critic inside online GRPO/PPO CodeLLM post-training (RLEMF), benchmark live 7B&ndash;70B reasoning models under swap-auditing, and expand to inter-procedural Python and Rust graphs.</p>
+
+  <p><strong>Acknowledgment:</strong> The authors thank the Reinforcement Learning course faculty at the National Institute of Technology Warangal (NIT Warangal) for their support and guidance.</p>
+
+  <h2>References</h2>
+  <ol class="refs">
+    <li>H. Jiang et al., &ldquo;CodeJudgeBench: Benchmarking LLM-as-a-Judge for Coding Tasks,&rdquo; <em>arXiv:2507.10535</em>, 2025.</li>
+    <li>Einsia et al., &ldquo;SWE-Refactor: A Repository-Level Benchmark for Real-World LLM-Based Code Refactoring,&rdquo; <em>arXiv:2602.03712</em>, Zenodo DOI: 10.5281/zenodo.17196850, 2026.</li>
+    <li>W. Tong and T. Zhang, &ldquo;CodeJudge: Evaluating Code Generation with Large Language Models,&rdquo; in <em>Proc. EMNLP</em>, 2024, pp. 20032&ndash;20051.</li>
+    <li>L. Zheng et al., &ldquo;Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena,&rdquo; in <em>NeurIPS</em>, vol. 36, 2023.</li>
+    <li>V. Mnih et al., &ldquo;Human-level control through deep reinforcement learning,&rdquo; <em>Nature</em>, vol. 518, pp. 529&ndash;533, 2015.</li>
+    <li>H. van Hasselt, A. Guez, and D. Silver, &ldquo;Deep Reinforcement Learning with Double Q-Learning,&rdquo; in <em>Proc. AAAI</em>, 2016, pp. 2094&ndash;2100.</li>
+    <li>Z. Wang et al., &ldquo;Dueling Network Architectures for Deep Reinforcement Learning,&rdquo; in <em>Proc. ICML</em>, 2016, pp. 1995&ndash;2003.</li>
+    <li>R. A. Bradley and M. E. Terry, &ldquo;Rank Analysis of Incomplete Block Designs: I. The Method of Paired Comparisons,&rdquo; <em>Biometrika</em>, vol. 39, pp. 324&ndash;345, 1952.</li>
+    <li>P. F. Christiano et al., &ldquo;Deep Reinforcement Learning from Human Preferences,&rdquo; in <em>NeurIPS</em>, vol. 30, 2017.</li>
+    <li>R. Rafailov et al., &ldquo;Direct Preference Optimization: Your Language Model is Secretly a Reward Model,&rdquo; in <em>NeurIPS</em>, vol. 36, 2023.</li>
+    <li>D. M. Roijers et al., &ldquo;A Survey of Multi-Objective Sequential Decision-Making,&rdquo; <em>JAIR</em>, vol. 48, pp. 67&ndash;113, 2013.</li>
+    <li>M. Towers et al., &ldquo;Gymnasium: A Standard Interface for Reinforcement Learning Environments,&rdquo; <em>arXiv:2407.17032</em>, 2024.</li>
+    <li>M. Chen et al., &ldquo;Evaluating Large Language Models Trained on Code,&rdquo; <em>arXiv:2107.03374</em>, 2021.</li>
+    <li>C. E. Jimenez et al., &ldquo;SWE-bench: Can Language Models Resolve Real-World GitHub Issues?&rdquo; in <em>Proc. ICLR</em>, 2024.</li>
+    <li>R. Puri et al., &ldquo;Project CodeNet: A Large-Scale AI for Code Dataset,&rdquo; in <em>NeurIPS Datasets &amp; Benchmarks</em>, 2021.</li>
+    <li>D. Guo et al., &ldquo;GraphCodeBERT: Pre-training Code Representations with Data Flow,&rdquo; in <em>Proc. ICLR</em>, 2021.</li>
+    <li>B. Hui et al., &ldquo;Qwen2.5-Coder Technical Report,&rdquo; <em>arXiv:2409.12186</em>, 2024.</li>
+    <li>D. Guo et al., &ldquo;DeepSeek-Coder: When the Large Language Model Meets Programming,&rdquo; <em>arXiv:2401.14196</em>, 2024.</li>
+    <li>A. Dubey et al., &ldquo;The Llama 3 Herd of Models,&rdquo; <em>arXiv:2407.21783</em>, 2024.</li>
+    <li>T. J. McCabe, &ldquo;A Complexity Measure,&rdquo; <em>IEEE Trans. Software Engineering</em>, vol. SE-2, no. 4, pp. 308&ndash;320, 1976.</li>
+    <li>M. H. Halstead, <em>Elements of Software Science</em>, Elsevier, 1977.</li>
+    <li>G. A. Campbell, &ldquo;Cognitive Complexity: An Overview and Evaluation,&rdquo; in <em>Proc. ACM TechDebt</em>, 2018, pp. 57&ndash;58.</li>
+    <li>J.-L. Letouzey, &ldquo;The SQALE Method for Evaluating Technical Debt,&rdquo; in <em>Proc. IEEE MTD</em>, 2012, pp. 31&ndash;36.</li>
+    <li>N. Tsantalis, A. Ketkar, and D. Dig, &ldquo;RefactoringMiner 2.0,&rdquo; <em>IEEE Trans. Software Engineering</em>, vol. 48, no. 3, pp. 930&ndash;950, 2022.</li>
+    <li>M. Fowler, <em>Refactoring: Improving the Design of Existing Code</em>, 2nd ed., Addison-Wesley, 2018.</li>
+    <li>T. Chen and C. Guestrin, &ldquo;XGBoost: A Scalable Tree Boosting System,&rdquo; in <em>Proc. ACM SIGKDD</em>, 2016, pp. 785&ndash;794.</li>
+  </ol>
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+project:
+  name: "multimodal-code-patch-evaluator"
+  seed: 42
+
+database:
+  sqlite_path: "data/patch_pairs.db"
+
+phase1_ingestion:
+  codenet_raw_dir: "data/raw/Project_CodeNet_Java250"
+  swe_refactor_raw_path: "data/raw/swe_refactor.json"
+  # Strict group split ratios by problem_id for CodeNet Java250
+  train_ratio: 0.70
+  val_ratio: 0.15
+  test_ratio: 0.15
+  # Length-controlled subset threshold: |SLOC_A - SLOC_B| / max(SLOC_A, SLOC_B) <= 0.15
+  length_matched_max_rel_diff: 0.15
+  # Minimum TDI delta (in SQALE remediation minutes) required to form a valid (Patch A, Patch B) pair
+  min_tdi_delta_minutes: 5.0
+  max_pairs_per_problem: 6
+
+sonar_proxy:
+  # Independent SQALE / SonarQube-style rule remediation weights (in minutes)
+  base_method_sloc_threshold: 20
+  sloc_overage_minutes_per_line: 0.5
+  max_params_threshold: 4
+  extra_param_minutes: 4.0
+  deep_nesting_threshold: 2
+  extra_nesting_minutes: 6.0
+  complex_boolean_ops_threshold: 2
+  boolean_op_minutes: 3.0
+  duplicate_statement_block_minutes: 8.0
+  magic_number_minutes: 1.5
+  high_coupling_calls_threshold: 6
+  extra_coupling_call_minutes: 1.5
+
+rubric_triggers:
+  # Ground-truth delta thresholds that trigger each of the 4 Track B reasoning dimensions
+  maintainability_sloc_delta: 6
+  maintainability_var_delta: 3
+  complexity_nesting_delta: 1
+  complexity_branch_delta: 3
+  duplication_block_delta: 1
+  duplication_ngram_delta: 0.10
+  change_impact_coupling_delta: 2
+  change_impact_param_delta: 1

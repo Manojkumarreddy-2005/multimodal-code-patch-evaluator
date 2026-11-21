@@ -1,0 +1,187 @@
+{
+  "elapsed_seconds": 100.05,
+  "dataset_splits": {
+    "train_pairs": 1054,
+    "val_pairs": 228,
+    "test_pairs": 222,
+    "ood_test_pairs": 837
+  },
+  "track_a_discriminative_and_rl": {
+    "XGBoost_Delta_Classifier": {
+      "backend": "xgboost.XGBClassifier",
+      "top_feature_importances": {
+        "cyclomatic_complexity": 0.0782,
+        "cognitive_complexity": 0.208,
+        "max_ast_depth": 0.0039,
+        "max_nesting_depth": 0.0077,
+        "ast_clone_ratio": 0.0417,
+        "token_4gram_overlap": 0.482,
+        "halstead_volume": 0.0804,
+        "dfg_edge_density": 0.0043,
+        "mean_live_var_span": 0.0065,
+        "fan_out_calls": 0.0124,
+        "local_var_param_count": 0.0101,
+        "sloc": 0.0649
+      },
+      "in_domain_test_codenet": {
+        "pairwise_preference_accuracy": 0.9955,
+        "length_matched_accuracy": 0.9912,
+        "spearman_rho_vs_sonar_tdi": 0.9802,
+        "macro_f1": 0.9955
+      },
+      "ood_test_swe_refactor": {
+        "pairwise_preference_accuracy": 0.595,
+        "length_matched_accuracy": 0.6174,
+        "spearman_rho_vs_sonar_tdi": 0.8067,
+        "macro_f1": 0.595
+      }
+    },
+    "Multimodal_Pointwise_Regression": {
+      "in_domain_test_codenet": {
+        "pairwise_preference_accuracy": 0.9955,
+        "length_matched_accuracy": 0.9912,
+        "spearman_rho_vs_sonar_tdi": 0.9807,
+        "macro_f1": 0.9955
+      },
+      "ood_test_swe_refactor": {
+        "pairwise_preference_accuracy": 0.7802,
+        "length_matched_accuracy": 0.7167,
+        "spearman_rho_vs_sonar_tdi": 0.8935,
+        "macro_f1": 0.7801
+      }
+    },
+    "Multimodal_Bradley_Terry_Pairwise": {
+      "in_domain_test_codenet": {
+        "pairwise_preference_accuracy": 1.0,
+        "length_matched_accuracy": 1.0,
+        "spearman_rho_vs_sonar_tdi": 0.9458,
+        "macro_f1": 1.0
+      },
+      "ood_test_swe_refactor": {
+        "pairwise_preference_accuracy": 0.6201,
+        "length_matched_accuracy": 0.6513,
+        "spearman_rho_vs_sonar_tdi": 0.7531,
+        "macro_f1": 0.6201
+      }
+    },
+    "Gymnasium_MultiObjective_DQN": {
+      "final_episode_win_rate": 0.9583,
+      "in_domain_test_codenet": {
+        "pairwise_preference_accuracy": 0.973,
+        "length_matched_accuracy": 0.9561,
+        "spearman_rho_vs_sonar_tdi": 0.8136,
+        "macro_f1": 0.973
+      },
+      "ood_test_swe_refactor": {
+        "pairwise_preference_accuracy": 0.5747,
+        "length_matched_accuracy": 0.6174,
+        "spearman_rho_vs_sonar_tdi": 0.5856,
+        "macro_f1": 0.5747
+      }
+    }
+  },
+  "track_b_generative_codellms": {
+    "Qwen2.5-Coder-7B-Instruct": {
+      "in_domain_test_codenet": {
+        "model_name": "Qwen2.5-Coder-7B-Instruct",
+        "num_pairs_evaluated": 222,
+        "pairwise_preference_accuracy": 0.9505,
+        "macro_f1": 0.9504,
+        "strict_swap_consistent_accuracy": 0.9234,
+        "position_bias_rate": 0.0631,
+        "selection_reasoning_consistency_rate": 0.982,
+        "dimension_wise_recall": {
+          "maintainability_reasoning": 0.8774,
+          "complexity_awareness": 0.8876,
+          "duplication_detection": 0.8986,
+          "future_change_impact": 0.83
+        },
+        "mean_dimension_recall": 0.8734
+      },
+      "ood_test_swe_refactor": {
+        "model_name": "Qwen2.5-Coder-7B-Instruct",
+        "num_pairs_evaluated": 250,
+        "pairwise_preference_accuracy": 0.788,
+        "macro_f1": 0.7851,
+        "strict_swap_consistent_accuracy": 0.62,
+        "position_bias_rate": 0.288,
+        "selection_reasoning_consistency_rate": 0.992,
+        "dimension_wise_recall": {
+          "maintainability_reasoning": 0.8621,
+          "complexity_awareness": 0.9247,
+          "duplication_detection": 0.7395,
+          "future_change_impact": 0.744
+        },
+        "mean_dimension_recall": 0.8176
+      }
+    },
+    "DeepSeek-Coder-6.7B-Instruct": {
+      "in_domain_test_codenet": {
+        "model_name": "DeepSeek-Coder-6.7B-Instruct",
+        "num_pairs_evaluated": 222,
+        "pairwise_preference_accuracy": 0.9459,
+        "macro_f1": 0.9459,
+        "strict_swap_consistent_accuracy": 0.9144,
+        "position_bias_rate": 0.0766,
+        "selection_reasoning_consistency_rate": 0.9955,
+        "dimension_wise_recall": {
+          "maintainability_reasoning": 0.9009,
+          "complexity_awareness": 0.8166,
+          "duplication_detection": 0.8986,
+          "future_change_impact": 0.765
+        },
+        "mean_dimension_recall": 0.8453
+      },
+      "ood_test_swe_refactor": {
+        "model_name": "DeepSeek-Coder-6.7B-Instruct",
+        "num_pairs_evaluated": 250,
+        "pairwise_preference_accuracy": 0.76,
+        "macro_f1": 0.7543,
+        "strict_swap_consistent_accuracy": 0.58,
+        "position_bias_rate": 0.352,
+        "selection_reasoning_consistency_rate": 0.976,
+        "dimension_wise_recall": {
+          "maintainability_reasoning": 0.7931,
+          "complexity_awareness": 0.828,
+          "duplication_detection": 0.7059,
+          "future_change_impact": 0.7381
+        },
+        "mean_dimension_recall": 0.7663
+      }
+    },
+    "Meta-Llama-3-8B-Instruct": {
+      "in_domain_test_codenet": {
+        "model_name": "Meta-Llama-3-8B-Instruct",
+        "num_pairs_evaluated": 222,
+        "pairwise_preference_accuracy": 0.9144,
+        "macro_f1": 0.9139,
+        "strict_swap_consistent_accuracy": 0.8468,
+        "position_bias_rate": 0.1486,
+        "selection_reasoning_consistency_rate": 0.982,
+        "dimension_wise_recall": {
+          "maintainability_reasoning": 0.8868,
+          "complexity_awareness": 0.7633,
+          "duplication_detection": 0.7512,
+          "future_change_impact": 0.655
+        },
+        "mean_dimension_recall": 0.7641
+      },
+      "ood_test_swe_refactor": {
+        "model_name": "Meta-Llama-3-8B-Instruct",
+        "num_pairs_evaluated": 250,
+        "pairwise_preference_accuracy": 0.72,
+        "macro_f1": 0.7102,
+        "strict_swap_consistent_accuracy": 0.524,
+        "position_bias_rate": 0.392,
+        "selection_reasoning_consistency_rate": 0.968,
+        "dimension_wise_recall": {
+          "maintainability_reasoning": 0.7724,
+          "complexity_awareness": 0.7634,
+          "duplication_detection": 0.6134,
+          "future_change_impact": 0.6488
+        },
+        "mean_dimension_recall": 0.6995
+      }
+    }
+  }
+}

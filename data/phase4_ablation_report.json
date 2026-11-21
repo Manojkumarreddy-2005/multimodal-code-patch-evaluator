@@ -1,0 +1,321 @@
+{
+  "elapsed_seconds": 249.18,
+  "dataset_splits": {
+    "train_pairs": 1054,
+    "val_pairs": 228,
+    "test_pairs": 222,
+    "ood_test_pairs": 837
+  },
+  "ablation_1_modality_impact": {
+    "Static_Metrics_Only_64D": {
+      "modality_mode": "static_only",
+      "in_domain_codenet_test": {
+        "model_name": "Static_Metrics_Only_64D",
+        "split_name": "codenet_test",
+        "num_pairs": 222,
+        "pairwise_preference_accuracy": 0.9955,
+        "ci_95_low": 0.9865,
+        "ci_95_high": 1.0,
+        "length_matched_accuracy": 0.9912,
+        "spearman_rho_vs_sonar_tdi": 0.9342,
+        "spearman_p_value": 5.249e-200,
+        "macro_f1": 0.9955
+      },
+      "ood_swe_refactor_test": {
+        "model_name": "Static_Metrics_Only_64D",
+        "split_name": "swe_refactor_ood",
+        "num_pairs": 837,
+        "pairwise_preference_accuracy": 0.6714,
+        "ci_95_low": 0.6404,
+        "ci_95_high": 0.7037,
+        "length_matched_accuracy": 0.6441,
+        "spearman_rho_vs_sonar_tdi": 0.7027,
+        "spearman_p_value": 1.795e-249,
+        "macro_f1": 0.6714
+      }
+    },
+    "GraphCodeBERT_Only_768D": {
+      "modality_mode": "code_only",
+      "in_domain_codenet_test": {
+        "model_name": "GraphCodeBERT_Only_768D",
+        "split_name": "codenet_test",
+        "num_pairs": 222,
+        "pairwise_preference_accuracy": 0.982,
+        "ci_95_low": 0.964,
+        "ci_95_high": 0.9979,
+        "length_matched_accuracy": 0.9649,
+        "spearman_rho_vs_sonar_tdi": 0.9088,
+        "spearman_p_value": 6.588e-170,
+        "macro_f1": 0.982
+      },
+      "ood_swe_refactor_test": {
+        "model_name": "GraphCodeBERT_Only_768D",
+        "split_name": "swe_refactor_ood",
+        "num_pairs": 837,
+        "pairwise_preference_accuracy": 0.626,
+        "ci_95_low": 0.5926,
+        "ci_95_high": 0.6619,
+        "length_matched_accuracy": 0.5327,
+        "spearman_rho_vs_sonar_tdi": 0.4677,
+        "spearman_p_value": 9.625e-92,
+        "macro_f1": 0.6124
+      }
+    },
+    "Full_Multimodal_Fusion_832D_to_256D": {
+      "modality_mode": "multimodal",
+      "in_domain_codenet_test": {
+        "model_name": "Full_Multimodal_Fusion_832D_to_256D",
+        "split_name": "codenet_test",
+        "num_pairs": 222,
+        "pairwise_preference_accuracy": 0.9955,
+        "ci_95_low": 0.9865,
+        "ci_95_high": 1.0,
+        "length_matched_accuracy": 0.9912,
+        "spearman_rho_vs_sonar_tdi": 0.935,
+        "spearman_p_value": 4.015e-201,
+        "macro_f1": 0.9955
+      },
+      "ood_swe_refactor_test": {
+        "model_name": "Full_Multimodal_Fusion_832D_to_256D",
+        "split_name": "swe_refactor_ood",
+        "num_pairs": 837,
+        "pairwise_preference_accuracy": 0.6691,
+        "ci_95_low": 0.6374,
+        "ci_95_high": 0.7014,
+        "length_matched_accuracy": 0.6416,
+        "spearman_rho_vs_sonar_tdi": 0.7019,
+        "spearman_p_value": 1.269e-248,
+        "macro_f1": 0.669
+      }
+    }
+  },
+  "ablation_2_objective_comparison": {
+    "Tabular_XGBoost_Delta": {
+      "objective_type": "Tree Boosted LogLoss on \u0394m",
+      "feature_importances": {
+        "cyclomatic_complexity": 0.0655,
+        "cognitive_complexity": 0.2076,
+        "max_ast_depth": 0.0078,
+        "max_nesting_depth": 0.1119,
+        "ast_clone_ratio": 0.0464,
+        "token_4gram_overlap": 0.3537,
+        "halstead_volume": 0.1419,
+        "dfg_edge_density": 0.0043,
+        "mean_live_var_span": 0.0097,
+        "fan_out_calls": 0.0125,
+        "local_var_param_count": 0.0101,
+        "sloc": 0.0287
+      },
+      "in_domain_codenet_test": {
+        "model_name": "Tabular_XGBoost_Delta",
+        "split_name": "codenet_test",
+        "num_pairs": 222,
+        "pairwise_preference_accuracy": 0.9865,
+        "ci_95_low": 0.9685,
+        "ci_95_high": 1.0,
+        "length_matched_accuracy": 0.9825,
+        "spearman_rho_vs_sonar_tdi": 0.9761,
+        "spearman_p_value": 5.354e-295,
+        "macro_f1": 0.9865
+      },
+      "ood_swe_refactor_test": {
+        "model_name": "Tabular_XGBoost_Delta",
+        "split_name": "swe_refactor_ood",
+        "num_pairs": 837,
+        "pairwise_preference_accuracy": 0.5866,
+        "ci_95_low": 0.5568,
+        "ci_95_high": 0.6177,
+        "length_matched_accuracy": 0.569,
+        "spearman_rho_vs_sonar_tdi": 0.7484,
+        "spearman_p_value": 1.902e-300,
+        "macro_f1": 0.5866
+      }
+    },
+    "Pointwise_Regression_MSE": {
+      "objective_type": "Pointwise Continuous Debt MSE",
+      "in_domain_codenet_test": {
+        "model_name": "Pointwise_Regression_MSE",
+        "split_name": "codenet_test",
+        "num_pairs": 222,
+        "pairwise_preference_accuracy": 0.991,
+        "ci_95_low": 0.9775,
+        "ci_95_high": 1.0,
+        "length_matched_accuracy": 0.9825,
+        "spearman_rho_vs_sonar_tdi": 0.9817,
+        "spearman_p_value": 0.0,
+        "macro_f1": 0.991
+      },
+      "ood_swe_refactor_test": {
+        "model_name": "Pointwise_Regression_MSE",
+        "split_name": "swe_refactor_ood",
+        "num_pairs": 837,
+        "pairwise_preference_accuracy": 0.8578,
+        "ci_95_low": 0.8363,
+        "ci_95_high": 0.88,
+        "length_matched_accuracy": 0.7797,
+        "spearman_rho_vs_sonar_tdi": 0.8407,
+        "spearman_p_value": 0.0,
+        "macro_f1": 0.8578
+      }
+    },
+    "Bradley_Terry_Pairwise_Loss": {
+      "objective_type": "Siamese Bradley-Terry -log \u03c3(s_A - s_B)",
+      "in_domain_codenet_test": {
+        "model_name": "Bradley_Terry_Pairwise_Loss",
+        "split_name": "codenet_test",
+        "num_pairs": 222,
+        "pairwise_preference_accuracy": 0.9955,
+        "ci_95_low": 0.9865,
+        "ci_95_high": 1.0,
+        "length_matched_accuracy": 0.9912,
+        "spearman_rho_vs_sonar_tdi": 0.9307,
+        "spearman_p_value": 3.605e-195,
+        "macro_f1": 0.9955
+      },
+      "ood_swe_refactor_test": {
+        "model_name": "Bradley_Terry_Pairwise_Loss",
+        "split_name": "swe_refactor_ood",
+        "num_pairs": 837,
+        "pairwise_preference_accuracy": 0.6703,
+        "ci_95_low": 0.6404,
+        "ci_95_high": 0.7025,
+        "length_matched_accuracy": 0.6489,
+        "spearman_rho_vs_sonar_tdi": 0.6932,
+        "spearman_p_value": 4.721e-240,
+        "macro_f1": 0.6702
+      }
+    },
+    "DQN_Multi_Objective_RL": {
+      "objective_type": "Dueling Double-DQN Multi-Objective Reward (Pass + Debt + Complexity + Clone)",
+      "final_episode_win_rate": 0.9167,
+      "in_domain_codenet_test": {
+        "model_name": "DQN_Multi_Objective_RL",
+        "split_name": "codenet_test",
+        "num_pairs": 222,
+        "pairwise_preference_accuracy": 0.9775,
+        "ci_95_low": 0.9595,
+        "ci_95_high": 0.9955,
+        "length_matched_accuracy": 0.9561,
+        "spearman_rho_vs_sonar_tdi": 0.8774,
+        "spearman_p_value": 4.268e-143,
+        "macro_f1": 0.9775
+      },
+      "ood_swe_refactor_test": {
+        "model_name": "DQN_Multi_Objective_RL",
+        "split_name": "swe_refactor_ood",
+        "num_pairs": 837,
+        "pairwise_preference_accuracy": 0.6595,
+        "ci_95_low": 0.6242,
+        "ci_95_high": 0.6924,
+        "length_matched_accuracy": 0.6683,
+        "spearman_rho_vs_sonar_tdi": 0.6097,
+        "spearman_p_value": 5.791e-171,
+        "macro_f1": 0.6595
+      }
+    }
+  },
+  "track_b_generative_evaluation": {
+    "Qwen2.5-Coder-7B-Instruct": {
+      "in_domain_codenet_test": {
+        "model_name": "Qwen2.5-Coder-7B-Instruct",
+        "num_pairs_evaluated": 222,
+        "pairwise_preference_accuracy": 0.9459,
+        "macro_f1": 0.9459,
+        "strict_swap_consistent_accuracy": 0.9009,
+        "position_bias_rate": 0.0811,
+        "selection_reasoning_consistency_rate": 0.9775,
+        "dimension_wise_recall": {
+          "maintainability_reasoning": 0.9709,
+          "complexity_awareness": 0.8876,
+          "duplication_detection": 0.8986,
+          "future_change_impact": 0.83
+        },
+        "mean_dimension_recall": 0.8968
+      },
+      "ood_swe_refactor_test": {
+        "model_name": "Qwen2.5-Coder-7B-Instruct",
+        "num_pairs_evaluated": 250,
+        "pairwise_preference_accuracy": 0.808,
+        "macro_f1": 0.8052,
+        "strict_swap_consistent_accuracy": 0.652,
+        "position_bias_rate": 0.268,
+        "selection_reasoning_consistency_rate": 1.0,
+        "dimension_wise_recall": {
+          "maintainability_reasoning": 0.9481,
+          "complexity_awareness": 0.9247,
+          "duplication_detection": 0.7395,
+          "future_change_impact": 0.744
+        },
+        "mean_dimension_recall": 0.8391
+      }
+    },
+    "DeepSeek-Coder-6.7B-Instruct": {
+      "in_domain_codenet_test": {
+        "model_name": "DeepSeek-Coder-6.7B-Instruct",
+        "num_pairs_evaluated": 222,
+        "pairwise_preference_accuracy": 0.9279,
+        "macro_f1": 0.9279,
+        "strict_swap_consistent_accuracy": 0.8919,
+        "position_bias_rate": 0.0856,
+        "selection_reasoning_consistency_rate": 0.9955,
+        "dimension_wise_recall": {
+          "maintainability_reasoning": 0.9709,
+          "complexity_awareness": 0.8166,
+          "duplication_detection": 0.8986,
+          "future_change_impact": 0.765
+        },
+        "mean_dimension_recall": 0.8628
+      },
+      "ood_swe_refactor_test": {
+        "model_name": "DeepSeek-Coder-6.7B-Instruct",
+        "num_pairs_evaluated": 250,
+        "pairwise_preference_accuracy": 0.792,
+        "macro_f1": 0.7881,
+        "strict_swap_consistent_accuracy": 0.624,
+        "position_bias_rate": 0.324,
+        "selection_reasoning_consistency_rate": 0.972,
+        "dimension_wise_recall": {
+          "maintainability_reasoning": 0.9259,
+          "complexity_awareness": 0.828,
+          "duplication_detection": 0.7059,
+          "future_change_impact": 0.7381
+        },
+        "mean_dimension_recall": 0.7995
+      }
+    },
+    "Meta-Llama-3-8B-Instruct": {
+      "in_domain_codenet_test": {
+        "model_name": "Meta-Llama-3-8B-Instruct",
+        "num_pairs_evaluated": 222,
+        "pairwise_preference_accuracy": 0.9054,
+        "macro_f1": 0.9048,
+        "strict_swap_consistent_accuracy": 0.8153,
+        "position_bias_rate": 0.1622,
+        "selection_reasoning_consistency_rate": 0.9685,
+        "dimension_wise_recall": {
+          "maintainability_reasoning": 0.9535,
+          "complexity_awareness": 0.7633,
+          "duplication_detection": 0.7512,
+          "future_change_impact": 0.655
+        },
+        "mean_dimension_recall": 0.7808
+      },
+      "ood_swe_refactor_test": {
+        "model_name": "Meta-Llama-3-8B-Instruct",
+        "num_pairs_evaluated": 250,
+        "pairwise_preference_accuracy": 0.756,
+        "macro_f1": 0.7486,
+        "strict_swap_consistent_accuracy": 0.556,
+        "position_bias_rate": 0.376,
+        "selection_reasoning_consistency_rate": 0.952,
+        "dimension_wise_recall": {
+          "maintainability_reasoning": 0.8815,
+          "complexity_awareness": 0.7634,
+          "duplication_detection": 0.6134,
+          "future_change_impact": 0.6488
+        },
+        "mean_dimension_recall": 0.7268
+      }
+    }
+  }
+}
